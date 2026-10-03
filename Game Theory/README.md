@@ -12,3 +12,4 @@ Scegli la dispensa italiana, la versione inglese o la trascrizione grezza. Più 
 |---|---|---|---|---|
 | [28/09/2026](./2026-09-28/) | Introduzione al Corso e Logistica (Game Theory) | [Italiano](./2026-09-28/schema.md) | [English](./2026-09-28/schema.en.md) | [Trascrizione](./2026-09-28/trascrizione.txt) |
 | [30/09/2026](./2026-09-30/) | Lezione: Teoria dei Giochi - Lotterie e Gestione dell'Incertezza | [Italiano](./2026-09-30/schema.md) | [English](./2026-09-30/schema.en.md) | [Trascrizione](./2026-09-30/trascrizione.txt) |
+| [05/10/2026](./2026-10-05/) | Teoria dei Giochi: Introduzione ai Giochi Statici a Informazione Completa | [Italiano](./2026-10-05/schema.md) | [English](./2026-10-05/schema.en.md) | [Trascrizione](./2026-10-05/trascrizione.txt) |
