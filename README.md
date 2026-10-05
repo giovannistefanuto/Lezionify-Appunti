@@ -17,7 +17,7 @@ Puoi leggere i file Markdown direttamente su GitHub, senza installare nulla e se
 | [Game Theory](./Game%20Theory/) | 3 |
 | [Intelligent Robotics](./Intelligent%20Robotics/) | 3 |
 | [RC](./RC/) | 9 |
-| [Reinforcement Learning](./Reinforcement%20Learning/) | 2 |
+| [Reinforcement Learning](./Reinforcement%20Learning/) | 3 |
 
 ## Che cos’è Lezionify
 
