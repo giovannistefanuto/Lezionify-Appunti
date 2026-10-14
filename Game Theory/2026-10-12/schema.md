@@ -2,302 +2,314 @@
 
 ## Overview Didattica
 
-In questa lezione viene affrontato il limite fondamentale dell'**Equilibrio di Nash** (*Nash Equilibrium*) nella sua formulazione classica in strategie pure, ovvero l'impossibilità di descrivere o prevedere l'esito di giochi strettamente competitivi a somma zero, come il gioco del "Pari o Dispari" (*Odds and Evens*). In tali contesti, la presenza inevitabile del rimpianto (*regret*) per lo sconfitto e l'impossibilità di formulare credenze mutuamente consistenti determinano l'assenza di un equilibrio deterministico.
+Nelle lezioni precedenti l'**Equilibrio di Nash (Nash Equilibrium)** è stato introdotto come uno strumento predittivo fondamentale per determinare le configurazioni stabili in un gioco in forma normale. Tuttavia, il concetto classico applicato alle sole strategie pure presenta un limite strutturale: esistono giochi a interazione strettamente competitiva in cui non esiste alcun equilibrio in strategie pure. Un esempio paradigmatico è il gioco di **Pari e Dispari (Odds and Evens)**, assimilabile al lancio di una moneta (*coin toss*), nel quale ogni profilo di strategie lascia sempre lo sconfitto con il rimpianto (*regret*) della scelta effettuata e rende impossibile per entrambi i giocatori formulare credenze corrette e stabili in modo simultaneo.
 
-Per superare questo stallo concettuale, viene introdotta la nozione di **Strategia Mista** (*Mixed Strategy*), classificata come **Concetto Chiave** dell'insegnamento:
-* **Aleatorietà controllata:** A differenza del rischio esogeno (come nelle lotterie), la randomizzazione è qui endogena; il giocatore razionale sceglie deliberatamente di rendere imprevedibile la propria azione.
-* **Formalizzazione matematica:** Una strategia mista per il giocatore $i$ è definita formalmente come una distribuzione di probabilità $\mu_i$ sull'insieme discreto delle strategie pure $S_i$, appartenente al simplesso di probabilità (*simplex*) indicato con $\Delta(S_i)$, tale per cui:
-  $$\sum_{s \in S_i} \mu_i(s) = 1 \quad \text{con} \quad \mu_i(s) \in [0, 1]$$
-* **Intuizione dell'equilibrio:** Tramite l'estensione euristica del gioco con scelte intermedie probabilistiche (ad esempio, giocare con probabilità $1/2$), si introduce l'idea che l'equilibrio emerga quando i payoff attesi si bilanciano, rendendo gli avversari indifferenti rispetto alle deviazioni unilaterali.
+Per superare questa lacuna teorica e garantire l'esistenza dell'equilibrio, si rende necessaria un'estensione dello spazio delle azioni tramite le **Strategie Miste (Mixed Strategies)**. Sebbene a una prima analisi la razionalità sembri incompatibile con il caso, il giocatore non subisce una casualità esogena incontrollata (come nelle lotterie esterne), ma sceglie deliberatamente e controlla una propria distribuzione di probabilità sulle strategie pure disponibili. Formalmente, una strategia mista per il giocatore $i$ è definita come una distribuzione di probabilità appartenente al simplesso $\Delta(S_i)$ associato al suo insieme di strategie pure $S_i$. Questa combinazione randomizzata elimina la prevedibilità dell'agente e consente di ristabilire l'assenza di incentivo unilaterale alla deviazione, definendo un punto di equilibrio operativo anche nei contesti a somma zero più conflittuali.
 
 ---
 
-### Oltre l'Equilibrio Puro: La Necessità delle Strategie Miste
+### Fondamenti delle Strategie Miste
 
-Nei giochi analizzati finora, l'**Equilibrio di Nash** (*Nash Equilibrium*) si è dimostrato uno strumento predittivo formidabile. Tuttavia, ci si scontra presto con un limite evidente: esistono giochi in cui sembra non esserci alcun equilibrio di Nash.
+#### Perché espandere il concetto di Equilibrio di Nash?
+Nei moduli precedenti abbiamo introdotto l'**Equilibrio di Nash (Nash Equilibrium)**, uno strumento predittivo estremamente potente. Purtroppo, esistono giochi in cui sembra non esistere alcun equilibrio di Nash. 
 
-Un esempio lampante è il classico **Gioco Pari e Dispari** (*Odds and Evens Game*). In questo contesto, due giocatori mostrano contemporaneamente un numero (ad esempio $0$ oppure $1$):
-* Se la somma è pari, vince il giocatore *Pari* (*Even*).
-* Se la somma è dispari, vince il giocatore *Dispari* (*Odd*).
+Un esempio classico è il **gioco di Pari e Dispari (Odds and Evens)**. In questo gioco, alla fine una persona vince e l'altra perde: di conseguenza, il giocatore sconfitto proverà sempre un certo rimpianto (regret) per la mossa fatta. Ragionando in termini di risposte ottimali alle credenze (beliefs), è impossibile che le credenze di entrambi i giocatori siano corrette contemporaneamente. Si tratta di una situazione spiacevole, poiché sembra mancare qualcosa per poter fare previsioni efficaci. 
 
-Trattandosi di un gioco a somma zero, uno vince e l'altro perde. Di conseguenza, chi perde avrà sempre un "rimorso" (*regret*) su ciò che ha giocato e avrebbe preferito cambiare mossa. Inoltre, se ciascun giocatore formula una congettura (*belief*) razionale sulla mossa dell'avversario e gioca la propria migliore risposta, è impossibile che le convinzioni di entrambi siano corrette simultaneamente. Il gioco è progettato per simulare il lancio di una moneta: sembra per sua natura imprevedibile. 
+Tuttavia, l'equilibrio di Nash in realtà esiste anche in questo gioco, ma per vederlo dobbiamo estendere i nostri orizzonti e introdurre le **strategie miste (mixed strategies)**.
 
-Eppure, l'idea di non poter applicare l'equilibrio di Nash a una classe così comune di interazioni è inaccettabile. L'equilibrio in realtà esiste, ma per trovarlo è necessario ampliare lo spazio delle azioni ammissibili introducendo le **Strategie Miste** (*Mixed Strategies*).
-
-#### Il Paradosso dell'Aleatorietà: Caso Esterno vs Randomizzazione Controllata
-
-All'inizio dello studio della teoria delle decisioni si è assunto che un agente razionale non ami l'incertezza intesa come aleatorietà esogena (come nelle lotterie subite passivamente). 
-
-Nelle strategie miste, tuttavia, la casualità non piove dall'alto: **sono i giocatori stessi a scegliere deliberatamente di randomizzare la propria mossa**. Il decisore mantiene il pieno controllo della distribuzione di probabilità con cui agirà. 
-Un'analogia efficace è quella dei giochi di carte collezionabili (come *Magic: The Gathering*, ideato proprio da matematici e teorici dei giochi): pescare una carta dal mazzo introduce un elemento casuale, ma la composizione del mazzo è stata programmata e ottimizzata a priori in modo del tutto razionale.
+> **Concetto Chiave:** Le strategie miste rappresentano il concetto più complesso da digerire in teoria dei giochi. A differenza di concetti precedenti (come le strategie strettamente dominate o l'efficienza paretiana), le strategie miste risultano poco intuitive e sembrano contraddire l'idea iniziale che i giocatori razionali rifuggano la casualità (*randomness*). In realtà, i giocatori non amano la casualità *esterna* (come una lotteria imposta dall'esterno), ma vogliono mantenere il controllo del gioco. Possono quindi decidere deliberatamente di introdurre dell'incertezza, programmando in autonomia un generatore casuale (ad esempio, un mazzo di carte o il lancio di una moneta).
 
 ---
 
-### Formalizzazione Matematica: Distribuzioni e Simplesso
+#### Formalizzazione delle Strategie Miste e del Simplesso
+Ricordiamo che una distribuzione di probabilità su un insieme discreto e non vuoto $A$ è una funzione $P: A \to [0, 1]$ tale che la somma di tutti i valori di probabilità sia pari a $1$:
+$$\sum_{a \in A} P(a) = 1$$
 
-In un gioco in forma normale, indichiamo con $S_i$ l'insieme non vuoto e discreto delle **Strategie Pure** (*Pure Strategies*) a disposizione del giocatore $i$.
+L'insieme di tutte le possibili distribuzioni di probabilità sull'insieme $A$ prende il nome di **simplesso (simplex)** di $A$, e viene denotato con $\Delta(A)$.
 
-Una **Strategia Mista** (*Mixed Strategy*) per il giocatore $i$, indicata con $m_i$, è una distribuzione di probabilità definita su $S_i$:
-$$m_i: S_i \to [0, 1] \quad \text{tale che} \quad \sum_{s_i \in S_i} m_i(s_i) = 1$$
+In un gioco in forma normale (Normal Form Game), un giocatore $i$ sceglie solitamente tra un insieme di strategie pure $S_i$. Estendiamo questa definizione:
+* **Strategia Pura (Pure Strategy):** Un singolo elemento $s_i \in S_i$.
+* **Strategia Mista (Mixed Strategy):** Una distribuzione di probabilità $m_i$ definita sull'insieme delle strategie pure $S_i$. Denotiamo l'insieme delle strategie miste per il giocatore $i$ come $\Delta(S_i)$.
 
-L'insieme di tutte le possibili distribuzioni di probabilità su $S_i$ prende il nome di **Simplesso di Probabilità** (*Probability Simplex*) e si denota con $\Delta(S_i)$ o $\Delta S_i$.
-
-```mermaid
-flowchart LR
-    accTitle: Relazione tra Strategie Pure, Miste e Supporto
-    accDescr: Diagramma che mostra come lo spazio delle strategie pure generi il simplesso delle strategie miste e come da una strategia mista si estragga il supporto.
-    
-    A["Strategie Pure: S_i = {s_i1, s_i2, ...}"] --> B["Simplesso: Δ(S_i)"]
-    B --> C["Strategia Mista m_i"]
-    C --> D["Supporto: supp(m_i) = {s_i | m_i(s_i) > 0}"]
-    
-    style A fill:#f9f9f9,stroke:#333333,stroke-width:2px
-    style B fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style D fill:#ede7f6,stroke:#512da8,stroke-width:2px
-```
-
-#### Supporto di una Strategia Mista
-
-Data una strategia mista generica $m_i \in \Delta(S_i)$, si definisce **Supporto** (*Support*) l'insieme delle strategie pure giocate con probabilità strettamente positiva:
-$$\text{supp}(m_i) = \{ s_i \in S_i \mid m_i(s_i) > 0 \}$$
-
-* **Strategie pure come casi degeneri**: Se il supporto è un singoletto ($\text{supp}(m_i) = \{s_i\}$), significa che il giocatore assegna probabilità $1$ a una specifica azione e $0$ a tutte le altre. Le strategie pure sono quindi semplicemente strategie miste degeneri.
-* **Strategie strettamente miste**: Quando il supporto contiene due o più strategie pure, il giocatore sta effettivamente randomizzando tra più alternative.
+In pratica, invece di scegliere un'unica opzione fissa, il giocatore sceglie una combinazione lineare di opzioni assegnando a ciascuna una certa probabilità. Ad esempio, se $S_i = \{s_{i1}, s_{i2}\}$, la strategia mista $m_i$ assegnerà probabilità $m_i(s_{i1})$ e $m_i(s_{i2})$ tali che la loro somma faccia $1$.
 
 ---
 
-### Estensione dell'Utilità: Il Calcolo dell'Utilità Attesa
+#### Utilità Attesa (Expected Utility) nelle Strategie Miste
+Quando i giocatori adottano strategie miste, la ricompensa (payoff) non è più deterministica. Dobbiamo quindi calcolare l'**utilità attesa (expected utility)**. Esistono due modi equivalenti per interpretarla:
+1. **Significato fisico:** È il valore atteso di un processo stocastico, dato che le mosse di tutti i giocatori sono regolate da distribuzioni di probabilità indipendenti.
+2. **Estensione matematica:** Si calcola l'utilità ponderando i payoff delle singole strategie pure in base alla probabilità con cui vengono attivate congiuntamente.
 
-Nei giochi a informazione completa e mosse simultanee, le scelte dei giocatori sono mutuamente indipendenti. Se ogni giocatore $j \in \{1, \dots, n\}$ adotta una strategia mista $m_j$, la probabilità congiunta che si realizzi uno specifico profilo di strategie pure $s = (s_1, s_2, \dots, s_n) \in S$ è data dal prodotto delle singole probabilità:
-$$P(s) = \prod_{j=1}^n m_j(s_j)$$
+Formalmente, dati i profili di strategie miste $M = (m_1, m_2, \dots, m_n)$, la probabilità con cui viene scelta una specifica combinazione di strategie pure congiunte $s = (s_1, s_2, \dots, s_n)$ (dove $s \in S_1 \times S_2 \times \dots \times S_n$) è data dal prodotto delle singole probabilità, per l'indipendenza delle scelte:
+$$\Pr(s) = m_1(s_1) \cdot m_2(s_2) \cdots m_n(s_n)$$
 
-L'utilità di un giocatore non è più un valore deterministico, ma diventa un'**Utilità Attesa** (*Expected Utility*). Seguendo l'approccio di von Neumann-Morgenstern, l'utilità estesa al profilo congiunto di strategie miste $m = (m_1, \dots, m_n)$ si calcola come:
-$$u_i(m) = \sum_{s \in S} \left( \prod_{j=1}^n m_j(s_j) \right) u_i(s)$$
-
-Questa formulazione soddisfa pienamente la proprietà di linearità rispetto alle probabilità ed estende il dominio della funzione di utilità da $S$ al simplesso congiunto $\Delta(S_1) \times \dots \times \Delta(S_n)$.
-
----
-
-### Esempio Operativo: Risoluzione di Pari e Dispari
-
-Consideriamo il gioco Pari e Dispari con la seguente matrice delle utilità pure:
-
-| Dispari \ Pari | $0$ | $1$ |
-| :---: | :---: | :---: |
-| **$0$** | $(-4, +4)$ | $(+4, -4)$ |
-| **$1$** | $(+4, -4)$ | $(-4, +4)$ |
-
-Parametrizziamo le scelte probabilistiche:
-* Il giocatore **Dispari** sceglie la strategia pura $0$ con probabilità $q$, e la strategia $1$ con probabilità $1 - q$.
-* Il giocatore **Pari** sceglie la strategia pura $0$ con probabilità $r$, e la strategia $1$ con probabilità $1 - r$.
-
-Le coppie di strategie pure $(s_{\text{Dispari}}, s_{\text{Pari}})$ hanno dunque probabilità indipendenti:
-* $(0, 0)$ con probabilità $q \cdot r \implies$ payoff: $(-4, +4)$
-* $(0, 1)$ con probabilità $q(1 - r) \implies$ payoff: $(+4, -4)$
-* $(1, 0)$ con probabilità $(1 - q)r \implies$ payoff: $(+4, -4)$
-* $(1, 1)$ con probabilità $(1 - q)(1 - r) \implies$ payoff: $(-4, +4)$
-
-#### Calcolo del Payoff Atteso per il Giocatore Dispari
-
-Calcoliamo l'utilità attesa $u_{\text{Dispari}}(q, r)$:
-$$u_{\text{Dispari}}(q, r) = -4qr + 4q(1 - r) + 4(1 - q)r - 4(1 - q)(1 - r)$$
-
-Raccogliendo il fattore $-4$:
-$$u_{\text{Dispari}}(q, r) = -4 \Big[ qr - q(1 - r) - (1 - q)r + (1 - q)(1 - r) \Big]$$
-
-Sviluppando i prodotti all'interno della parentesi quadra:
-$$\begin{aligned}
-qr - q + qr - r + qr + 1 - q - r + qr &= 4qr - 2q - 2r + 1 \\
-&= (2q - 1)(2r - 1)
-\end{aligned}$$
-
-Otteniamo quindi:
-$$u_{\text{Dispari}}(q, r) = -4(2q - 1)(2r - 1)$$
-
-Poiché il gioco è a somma zero ($u_{\text{Pari}} = -u_{\text{Dispari}}$):
-$$u_{\text{Pari}}(q, r) = +4(2q - 1)(2r - 1)$$
-
-#### Interpretazione del Risultato
-
-Se il giocatore Dispari sceglie $q = \frac{1}{2}$, il termine $(2q - 1)$ si annulla:
-$$u_{\text{Dispari}}\left(\frac{1}{2}, r\right) = -4 \left(2 \cdot \frac{1}{2} - 1\right)(2r - 1) = 0 \quad \forall r$$
-
-Allo stesso modo, se il giocatore Pari imposta $r = \frac{1}{2}$:
-$$u_{\text{Pari}}\left(q, \frac{1}{2}\right) = 0 \quad \forall q$$
-
-La combinazione $(q^*, r^*) = \left(\frac{1}{2}, \frac{1}{2}\right)$ genera un payoff pari a $(0, 0)$. Nessun giocatore può ottenere un'utilità strettamente maggiore deviando unilateralmente: entrambi ottengono $0$ qualsiasi altra probabilità decidano di adottare. Questo profilo costituisce l'**Equilibrio di Nash in strategie miste** del gioco.
+L'utilità attesa $u_i$ per il giocatore $i$ è quindi la somma pesata delle utilità delle strategie pure, ponderate sulle rispettive probabilità congiunte:
+$$u_i(m_1, m_2, \dots, m_n) = \sum_{s \in S_1 \times \dots \times S_n} \left[ \prod_{j=1}^{n} m_j(s_j) \right] u_i(s)$$
 
 ---
 
-### Dominanza con Strategie Miste
+#### Esempio Applicato: Il Gioco di Pari e Dispari
+Riprendiamo il gioco di *Pari e Dispari* in cui i giocatori (Chiamati *Odd* ed *Even*) scelgono tra due opzioni pure, che possiamo identificare numericamente come $0$ e $1$.
 
-I concetti di dominanza stretta e debole possono essere estesi direttamente alle strategie miste:
+Supponiamo che:
+* Il giocatore *Odd* scelga la strategia pura $0$ con probabilità $q$, e di conseguenza la strategia pura $1$ con probabilità $1 - q$. La sua strategia mista è identificata dal parametro $q$.
+* Il giocatore *Even* scelga la strategia pura $0$ con probabilità $r$, e la strategia pura $1$ con probabilità $1 - r$. La sua strategia mista è identificata dal parametro $r$.
 
-* Una strategia mista $m_i' \in \Delta(S_i)$ **domina strettamente** (*strictly dominates*) $m_i \in \Delta(S_i)$ se:
-  $$u_i(m_i', m_{-i}) > u_i(m_i, m_{-i}) \quad \forall m_{-i} \in \Delta(S_{-i})$$
+Analizziamo i quattro possibili esiti congiunti:
+1. Esito $(0,0)$ con probabilità $qr$: Payoff di *Odd* = $-4$, Payoff di *Even* = $+4$.
+2. Esito $(0,1)$ con probabilità $q(1-r)$: Payoff di *Odd* = $+4$, Payoff di *Even* = $-4$.
+3. Esito $(1,0)$ con probabilità $(1-q)r$: Payoff di *Odd* = $+4$, Payoff di *Even* = $-4$.
+4. Esito $(1,1)$ con probabilità $(1-q)(1-r)$: Payoff di *Odd* = $-4$, Payoff di *Even* = $+4$.
 
-* Una strategia mista $m_i' \in \Delta(S_i)$ **domina debolmente** (*weakly dominates*) $m_i \in \Delta(S_i)$ se:
-  $$u_i(m_i', m_{-i}) \ge u_i(m_i, m_{-i}) \quad \forall m_{-i} \in \Delta(S_{-i})$$
-  con disuguaglianza stretta per almeno un profilo $m_{-i}$.
+Moltiplicando ogni payoff per la rispettiva probabilità e sommando il tutto, otteniamo l'utilità attesa per il giocatore *Odd*:
+$$u_{\text{Odd}}(q, r) = -4qr + 4q(1-r) + 4(1-q)r - 4(1-q)(1-r)$$
 
-#### Concetto Chiave: Riduzione alle Strategie Pure degli Avversari
+Svolgendo i calcoli algebrici e raccogliendo i termini, l'espressione si semplifica in:
+$$u_{\text{Odd}}(q, r) = -4(2q - 1)(2r - 1)$$
 
-La definizione formale richiede di testare la disuguaglianza per ogni possibile profilo $m_{-i}$. Poiché lo spazio delle strategie miste dei rivali $\Delta(S_{-i})$ è continuo e infinito, verificare questa condizione elemento per elemento sarebbe ingestibile.
+Similmente, per il giocatore *Even* (i cui payoff sono opposti a quelli di *Odd*):
+$$u_{\text{Even}}(q, r) = 4(2q - 1)(2r - 1)$$
 
-Fortunatamente, entra in gioco un principio fondamentale basato sulla linearità dell'utilità attesa:
-
-> **Criterio di Riduzione per la Dominanza**:
-> Per verificare se una strategia mista $m_i'$ domina una strategia $m_i$, **è sufficiente testare la disuguaglianza unicamente contro le strategie pure degli avversari** $s_{-i} \in S_{-i}$.
->
-> $$u_i(m_i', m_{-i}) > u_i(m_i, m_{-i}) \quad \forall m_{-i} \in \Delta(S_{-i}) \iff u_i(m_i', s_{-i}) > u_i(m_i, s_{-i}) \quad \forall s_{-i} \in S_{-i}$$
-
-#### Intuizione della Dimostrazione
-
-1. **Necessità ($\implies$)**: Se la disuguaglianza vale per ogni profilo misto $m_{-i}$, vale anche per i profili degeneri in cui gli avversari giocano strategie pure con probabilità $1$.
-2. **Sufficienza ($\impliedby$)**: L'utilità attesa contro un profilo misto $m_{-i}$ è una combinazione lineare convessa delle utilità ottenute contro i singoli profili puri $s_{-i}$:
-   $$u_i(m_i, m_{-i}) = \sum_{s_{-i} \in S_{-i}} P(s_{-i}) \cdot u_i(m_i, s_{-i})$$
-   Se per ogni componente pura $s_{-i}$ vale $u_i(m_i', s_{-i}) > u_i(m_i, s_{-i})$, moltiplicando ambo i membri per i pesi non negativi $P(s_{-i})$ (la cui somma è $1$), la disuguaglianza stretta si conserva per qualsiasi combinazione convessa.
-
-Questo risultato trasforma una verifica teoricamente impraticabile su uno spazio infinito in un controllo banale su un numero finito di casi.
+Se analizziamo questo sistema, impostando $q = \frac{1}{2}$ e $r = \frac{1}{2}$, otteniamo un'utilità attesa pari a zero per entrambi, configurando proprio quell'equilibrio di Nash basato su strategie miste in cui nessuno ha un incentivo unilaterale a deviare.
 
 ---
 
-### Equilibrio di Nash in Strategie Miste, IESDSM e Teorema di Caratterizzazione
+#### Il Supporto di una Strategia Mista
+Un concetto fondamentale legato alle strategie miste è il **supporto (support)**.
 
-#### Estensione del concetto di Equilibrio di Nash
-Estendiamo ora la definizione di Equilibrio di Nash (Nash Equilibrium) passando dalle strategie pure alle strategie miste (mixed strategies). Un profilo di strategie miste congiunte $m = (m_1, m_2, \dots, m_N)$, appartenente al prodotto cartesiano di tutti i singoli spazi delle strategie miste $\Delta(S_i)$, è un **Equilibrio di Nash in Strategie Miste** se per ogni giocatore $i$ vale la condizione:
+> **Definizione:** Dato un generico profilo di strategia mista, il *supporto* di tale strategia è l'insieme di tutte le strategie pure che vengono giocate con probabilità non nulla.
 
-$$u_i(m) \ge u_i(m'_i, m_{-i}) \quad \forall m'_i \in \Delta(S_i)$$
+* Nel caso in cui un giocatore stia effettivamente "mischiando" le sue opzioni (es. scegliendo $q strictly$ compreso tra $0$ e $1$), il supporto comprenderà tutte le strategie pure disponibili (ad esempio, sia $0$ che $1$).
+* Nel caso in cui $q = 0$ oppure $q = 1$, il giocatore sta puntando tutto su un'unica opzione (probabilità al $100\%$). In questo scenario, la strategia mista degenera in una **strategia pura**, e il supporto diventa un *singleton* (un insieme contenente un solo elemento).
 
-Il significato concettuale non cambia rispetto alle strategie pure: l'equilibrio garantisce che nessun giocatore abbia un incentivo a una deviazione unilaterale (unilateral deviation) verso un'altra strategia mista, poiché non otterrebbe un payoff superiore.
-
-Riprendendo il gioco del *Pari o Dispari* (Odds and Evens), avevamo dimostrato che se entrambi i giocatori scelgono la probabilità $1/2$ (giocare *pari* o *dispari* con pari probabilità, $q = 1/2$ e $r = 1/2$), nessun giocatore ha un incentivo unilaterale a cambiare la propria mossa. Se per esempio il giocatore *Dispari* gioca con probabilità $1/2$ e il giocatore *Pari* sceglie deterministicamente una mossa fissa, allora *Dispari* troverebbe vantaggioso deviare per massimizzare il proprio guadagno. Quando entrambi giocano $1/2$, si trovano in una risposta ottima (best response) reciproca.
-
----
-
-#### IESDSM: Eliminazione Iterata delle Strategie Miste Dominate
-Abbiamo visto in precedenza l'eliminazione iterata delle strategie rigorosamente dominate (IESDS, *Iterated Elimination of Strictly Dominated Strategies*). Estendiamo ora questa tecnica alle strategie miste, ottenendo la **IESDSM** (*Iterated Elimination of Strictly Dominated Strategies in Mixed Strategies*).
-
-Consideriamo una matrice di payoff in cui, a un'analisi superficiale basata solo sulle strategie pure, potremmo non trovare alcuna strategia rigorosamente dominata da eliminare. Ad esempio, una strategia pura $R$ potrebbe garantire sempre un payoff costante (es. $1$), mentre un'altra strategia potrebbe oscillare tra $0$ e $4$. In questo caso, $R$ non è dominata da alcuna strategia *pura* presa singolarmente.
-
-Tuttavia, se un giocatore sceglie di randomizzare tra due strategie pure (lanciare una moneta, es. tra $L$ e $C$), può ottenere un valore atteso (expected value) superiore rispetto alla strategia pura $R$. 
-
-> **Concetto Chiave: Dominanza di una Combinazione Mista**
-> Una strategia pura può non essere dominata da alcuna altra singola strategia pura, ma risultare **strettamente dominata da una combinazione mista** di altre strategie.
-
-Applicando la IESDSM:
-1. Si identificano le strategie pure dominate da combinazioni miste (come la strategia $R$ nel nostro esempio) e le si elimina.
-2. La riduzione dello spazio delle strategie rende visibili nuove dominanze (es. eliminazione di strategie divenute sub-ottimali come $D$).
-3. Il processo converge a una soluzione di equilibrio più potente ed efficiente.
-
-I teoremi visti per la IESDS classica valgono identici anche per la IESDSM: l'ordine di eliminazione è ininfluente e gli Equilibri di Nash sopravvivono all'eliminazione.
-
-> **Attenzione**: È fondamentale utilizzare **solo la dominanza rigorosa** (strict dominance). Eliminare strategie debolmente dominate (weakly dominated strategies) rischia di scartare per errore l'equilibrio di Nash stesso o parte del supporto (support) necessario per trovarlo.
+Sebbene esista una sottile differenza teorica tra una strategia pura nativa e una strategia mista il cui supporto contiene un solo elemento (distinzione analoga a quella vista per le lotte e la teoria dell'informazione), l'uso del concetto di supporto ci permette di ignorare comodamente tutte le azioni che hanno probabilità di accadimento pari a zero, concentrandoci unicamente su ciò che viene effettivamente eseguito nel gioco.
 
 ---
 
-#### Teorema di Caratterizzazione (Characterization Theorem)
-Per trovare e verificare gli equilibri di Nash in strategie miste senza dover esplorare l'intero spazio delle probabilità per tentativi, utilizziamo un teorema fondamentale.
+### Dominanza, Equilibrio di Nash Misto ed Eliminazione Iterata (IESDSM)
 
-Sia $G$ un gioco in forma normale e $m$ un profilo di strategie miste congiunte. $m$ è un **Equilibrio di Nash** se e solo se, per ciascun giocatore $i$:
-1. $u_i(m) = u_i(s_i, m_{-i})$ per ogni strategia pura $s_i$ che appartiene al **supporto** (support) di $m_i$ (cioè le strategie giocate con probabilità maggiore di zero).
-2. $u_i(m) \ge u_i(s_i, m_{-i})$ per ogni strategia pura $s_i$ che **non** appartiene al supporto.
+Finora abbiamo introdotto i concetti di dominanza e di Equilibrio di Nash (Nash Equilibrium) facendo riferimento principalmente ai casi di strategia pura. Tuttavia, il concetto generale di strategia include naturalmente sia le strategie pure che quelle miste (Mixed Strategy), dove le strategie pure rappresentano semplicemente un caso particolare e degenere delle strategie miste. 
 
-##### Intuizione del Teorema
-Se un giocatore sta mescolando due o più strategie pure in un equilibrio di Nash, **tutte le strategie pure presenti nel suo supporto devono necessariamente garantirgli esattamente lo stesso identico payoff atteso**. 
-
-Se così non fosse (se una strategia pura del supporto desse un payoff inferiore a un'altra), il giocatore avrebbe una deviazione unilaterale vantaggiosa: basterebbe azzerare la probabilità associata alla strategia con rendimento minore e aumentare quella con rendimento maggiore, contraddicendo la definizione stessa di equilibrio di Nash.
+La domanda fondamentale è: le definizioni date in precedenza rimangono valide se estese alle strategie miste? E come cambia la loro applicazione pratica?
 
 ---
 
-#### Esercizio Pratico: Battaglia dei Sessi (Battle of the Sexes)
-Riprendiamo il gioco della *Battaglia dei Sessi*, in cui i giocatori Anne e Brian devono scegliere tra uno spettacolo Romantico ($R$) o Sci-Fi ($S$). Sappiamo che esistono due equilibri di Nash in strategie pure $(R, R)$ e $(S, S)$. Cerchiamo ora un eventuale **equilibrio di Nash in strategie miste**.
+### Estensione della Dominanza alle Strategie Miste
 
-Sia $q$ la probabilità con cui Anne sceglie $R$ e $r$ la probabilità con cui Brian sceglie $R$. Le probabilità complementari per $S$ saranno $(1-q)$ e $(1-r)$.
+Se ridefiniamo gli insiemi di riferimento passando dai profili di strategie pure $S$ agli insiemi di probabilità sulle strategie miste $\Delta S$, le definizioni di dominanza stretta e debole mantengono la loro validità formale.
 
-Applicando il Teorema di Caratterizzazione, supponiamo che il supporto per entrambi i giocatori includa sia $R$ che $S$ (entrambe le scelte hanno probabilità comprese tra $0$ e $1$). Per fare in modo che Anne sia indifferente tra giocare $R$ e giocare $S$, il payoff atteso deve essere identico in entrambi i casi, valutato in base alla probabilità scelta da Brian ($B$).
+Diciamo che una strategia mista $m_i'$ domina strettamente la strategia $m_i$ se per ogni profilo di strategie miste degli avversari $m_{-i}$ vale la seguente disuguaglianza di utilità attesa:
+$$u_i(m_i', m_{-i}) > u_i(m_i, m_{-i}) \quad \forall m_{-i} \in \Delta S_{-i}$$
 
-Impostando le equazioni di indifferenza:
-- Il payoff atteso di Anne giocando $R$ e $S$ deve uguagliarsi, il che ci permette di ricavare la probabilità ottima di Brian.
-- Sviluppando i calcoli simmetrici per Brian, troviamo la probabilità ottima di Anne.
+#### Il problema della verifica pratica
+Sebbene la definizione formale sia corretta, applicarla direttamente è estremamente difficile nella pratica. Il motivo risiede nel fatto che l'insieme delle strategie miste degli avversari $m_{-i}$ appartiene a uno spazio continuo e infinitamente grande ($\Delta S_1 \times \dots \times \nolinebreak \Delta S_n$). Verificare la disuguaglianza per infinite combinazioni è impossibile.
 
-Il procedimento algebrico porta a identificare il seguente profilo di strategie miste di equilibrio:
-- Anne sceglie $R$ con probabilità $q = \frac{2}{3}$ (e $S$ con $1/3$).
-- Brian sceglie $R$ con probabilità $r = \frac{1}{3}$ (e $S$ con $2/3$).
+Fortunatamente, esiste un criterio pratico molto più semplice basato sulle strategie pure.
+
+> **Concetto Chiave: Criterio di Verifica della Dominanza Mista**
+> Una strategia mista $m_i'$ domina strettamente una strategia $m_i$ se e solo se la disuguaglianza di dominanza è soddisfatta per **ogni strategia pura** degli avversari $s_{-i} \in S_{-i}$.
+
+*Intuizione:* Poiché l'utilità attesa è una combinazione lineare delle utilità associate ai profili di strategie pure, se la disuguaglianza vale per tutti i vertici dello spazio (le strategie pure $s_{-i}$), allora deve valere per qualsiasi combinazione convessa di essi (le strategie miste $m_{-i}$). Questo ci fornisce uno strumento operativo immediato per verificare se una strategia mista domina un'altra.
+
+---
+
+### Estensione dell'Equilibrio di Nash ai Profili Misti
+
+Analogamente, estendiamo il concetto di Equilibrio di Nash ai profili di strategie miste $m = (m_1, \dots, m_n)$.
+
+Un profilo di strategie miste $m \in \Delta S_1 \times \dots \times \Delta S_n$ è un **Equilibrio di Nash in strategie miste (Mixed Strategy Nash Equilibrium)** se per ogni giocatore $i$ e per ogni possibile deviazione verso un'altra strategia mista $m_i' \in \Delta S_i$ vale:
+$$u_i(m_i, m_{-i}) \ge u_i(m_i', m_{-i})$$
+
+Questo significa che nessun giocatore ha un incentivo unilaterale a deviare dalla propria strategia mista, poiché non otterrebbe un'utilità attesa superiore.
+
+#### Esempio: Pari e Dispari (Odds and Evens)
+Nel gioco del "Pari e Dispari", sappiamo che assegnare probabilità $q = 1/2$ al giocatore Dispari e $r = 1/2$ al giocatore Pari azzera i payoff attesi, rendendo ogni mossa ottimale per l'avversario. Se un giocatore sceglie la probabilità $1/2$, l'altro non ha alcun incentivo a deviare dalla propria strategia mista di $1/2$, confermando che $(1/2, 1/2)$ è un Equilibrio di Nash stabile. 
+
+*(Nota per lo studio autonomo: si può verificare formalmente che per il gioco del Pari e Dispari, $(1/2, 1/2)$ è l'unico equilibrio analizzando i diversi casi possibili).*
+
+---
+
+### Eliminazione Iterata delle Strategie Strettamente Dominate in Strategie Miste (IESDSM)
+
+L'introduzione delle strategie miste rende molto più potenti i nostri strumenti di previsione. Consideriamo l'utilizzo dell'Eliminazione Iterata delle Strategie Strettamente Dominate (Iterated Elimination of Strictly Dominated Strategies - IESDS), che nella sua versione estesa chiamiamo **IESDSM**.
+
+#### Vantaggio pratico della IESDSM
+Prendiamo un gioco in cui, a un'analisi superficiale con le sole strategie pure, non è possibile eliminare alcuna mossa perché nessuna strategia pura è dominata da un'altra strategia pura. 
+
+* **Il problema delle strategie pure:** Una strategia fissa (es. la mossa $R$ per il giocatore B) garantisce un payoff costante di $1$, mentre le altre mosse pure ($L$ o $C$) offrono variazioni (es. $4$ o $0$). A prima vista $R$ non è dominata da $L$ o $C$.
+* **La soluzione con le strategie miste:** Se il giocatore B decide di randomizzare tra $L$ e $C$ (ad esempio lanciando una moneta con probabilità $50/50$), può ottenere un valore atteso garantito pari a $2$. Poiché $2 > 1$, la strategia pura $R$ risulta **strettamente dominata da una combinazione mista** di $L$ e $C$.
 
 ```mermaid
 flowchart TD
-    A["Inizio Ricerca Nash Misto"] --> B["Applicazione Teorema di Caratterizzazione"]
-    B --> C["Imposizione Uguaglianza Payoff sul Supporto"]
-    C --> D["Risoluzione Equazioni di Indifferenza"]
-    D --> E["Soluzione: Anne (2/3, 1/3) e Brian (1/3, 2/3)"]
+    A["Giocatore B sceglie tra L, C, R"] --> B["Analisi Pure: R non è dominata da L o C singolarmente"]
+    B --> C["Introduzione IESDSM: B randomizza tra L e C (Valore atteso = 2)"]
+    C --> D["Payoff atteso della mossa mista (2) > Payoff della mossa pura R (1)"]
+    D --> E["La strategia pura R è strettamente dominata da una strategia mista"]
+    E --> F["Eliminazione di R e successiva risoluzione del gioco"]
 
     style A fill:#f9f,stroke:#333,stroke-width:2px
-    style E fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style E fill:#ff9,stroke:#333,stroke-width:2px
+    style F fill:#bfb,stroke:#333,stroke-width:2px
 ```
 
-##### Interpretazione dei Risultati
-Mentre nel *Pari o Dispari* la soluzione simmetrica $(1/2, 1/2)$ rifletteva l'esigenza di totale imprevedibilità (come lanciare una moneta), nella *Battaglia dei Sessi* le probabilità sono sbilanciate ($\frac{2}{3}$ e $\frac{1}{3}$). Questo accade perché i giocatori desiderano incontrarsi, ma ciascuno preferisce la propria ambientazione preferita. 
+Una volta eliminata la strategia $R$, il gioco si semplifica notevolmente, permettendo di eliminare successivamente le strategie inferiori degli altri giocatori (come la mossa $D$ del giocatore A) e di raggiungere direttamente l'Equilibrio di Nash.
 
-Adottare questa pianificazione mista rappresenta la strategia migliore di lungo termine per massimizzare i propri payoff attesi, anche se in alcuni casi specifici i due attori finiranno per non incontrarsi. L'equilibrio di Nash in strategie miste va interpretato come una **strategia di pianificazione ottimale** sotto incertezza.
+#### Proprietà teoriche fondamentali della IESDSM
+1. **Conservazione degli Equilibri:** Gli Equilibri di Nash sopravvivono all'applicazione della IESDSM.
+2. **Ordine di eliminazione ininfluente:** Analogamente al caso puro, l'ordine con cui si eliminano le strategie strettamente dominate non altera il risultato finale del processo.
 
----
-
-### Conclusioni e Approfondimenti: Il Teorema di Nash e l'Interpretazione delle Strategie Miste
-
-#### Il Teorema di Nash e la necessità delle strategie miste
-
-Finora abbiamo analizzato vari giochi, notando come in alcuni casi (come il gioco *Odds and Evens*) sembri non esistere alcun equilibrio di Nash in strategie pure. Per risolvere questo problema, John Nash operò nel 1950 in modo simile a quanto fanno i fisici subatomici quando postulano l'esistenza di una particella mancante per completare una tabella teorica: **postulò l'esistenza di un equilibrio**, introducendo il concetto di **strategie miste (mixed strategies)**.
-
-> **Concetto Chiave: Il Teorema di Esistenza di Nash**
-> Dimostrato da John Nash nel 1950, il teorema stabilisce che *ogni gioco con insiemi di strategie finiti possiede almeno un equilibrio di Nash*, a patto di ammettere strategie miste.
-
-Questo risultato è estremamente potente, sebbene presenti dei limiti. Si tratta infatti di un teorema di sola *esistenza*: garantisce che una soluzione esista sempre, ma non dice quanto sia facile o difficile calcolarla. Inoltre, mentre in alcuni giochi (come *Battle of the Sexes*) gli equilibri possono essere molteplici, in altri dove le strategie pure fallivano (come *Odds and Evens*), l'introduzione delle strategie miste garantisce comunque una soluzione.
+> **Concetto Chiave: Il pericolo della dominanza debole**
+> È fondamentale applicare l'eliminazione **unicamente** basandosi sulla dominanza stretta. Se si eliminassero strategie debolmente dominate, si corre il serio rischio di:
+> * Escludere ed eliminare un Equilibrio di Nash valido.
+> * Eliminare componenti essenziali del supporto (le strategie che compongono la strategia mista di equilibrio), compromettendo la ricerca della soluzione corretta del gioco.
 
 ---
 
-#### Il problema dell'interpretazione fisica delle strategie miste
+### Il Teorema di Caratterizzazione (Indifferenza sul Supporto)
 
-Accettare matematicamente le strategie miste solleva un problema di interpretazione pratica: *che cosa significano nella realtà?* Trattandosi di giocatori razionali, l'idea che un individuo agisca come il personaggio "Due Facce" di Batman—affidandosi al lancio di una moneta per decidere—sembra l'epitome dell'irrazionalità. 
+Quando studiamo i giochi in forma normale, un concetto fondamentale è quello di Equilibrio di Nash (Nash Equilibrium). Abbiamo visto che in un equilibrio di Nash nessuno dei giocatori ha un incentivo a una deviazione unilaterale (unilateral deviation), ovvero a cambiare la propria strategia per ottenere un payoff migliore.
 
-Inoltre, alla fine del gioco, il giocatore deve comunque compiere un'azione concreta (giocare una strategia pura). Non è possibile "giocare a metà" una mossa in un gioco statico a informazione completa. Nel corso del tempo sono state proposte tre diverse interpretazioni per dare un senso fisico alle strategie miste:
+Ma cosa succede quando passiamo alle strategie miste (mixed strategies)? Esiste un teorema molto importante, noto come **Teorema di Caratterizzazione** (o principio di indifferenza sul supporto), che ci spiega esattamente quando una strategia mista congiunta costituisce un equilibrio di Nash. 
 
-1. **La legge dei grandi numeri (Large Numbers):** 
-   L'idea originaria di Nash era che, se il gioco viene ripetuto molte volte ($M$ volte) e il giocatore randomizza secondo una certa probabilità $Q$, allora per la legge dei grandi numeri otterrà una certa percentuale di successi. 
-   * *Critica:* Questa interpretazione mal si adatta ai giochi statici, che per definizione sono one-shot (giocati una sola volta). I giocatori reali mantengono memoria della storia passata e non resettano la propria memoria a ogni turno come farebbe un computer.
+Anche se non faremo la dimostrazione formale, l'intuizione dietro questo teorema è estremamente logica.
 
-2. **La logica fuzzy (Fuzzy Logic):**
-   Sviluppata nel XX secolo, suggerisce che giocare con una probabilità del $50\%$ ($1/2$) significhi trovarsi in uno stato intermedio di indecisione tra zero e uno.
-   * *Critica:* Sebbene descriva bene lo stato mentale di chi non sa cosa fare (specialmente in giochi come *Odds and Evens*), non giustifica rigorosamente il comportamento strategico razionale.
+#### Enunciato del Teorema
 
-3. **L'interpretazione tramite le Credenze (Beliefs):**
-   È l'interpretazione moderna più valida e comunemente accettata nella teoria dei giochi contemporanea.
+Sia $G$ un gioco in forma normale e sia $m$ una strategia mista congiunta. Dire che $m$ è un equilibrio di Nash equivale a dire che:
+
+1. Per ciascun giocatore $i$, l'utilità attesa giocando la strategia mista $u_i(m)$ deve essere uguale all'utilità ottenuta giocando qualsiasi strategia pura $s_i$ che appartiene al **supporto** (support) della strategia mista:
+   $$u_i(m) = u_i(s_i, m_{-i}) \quad \text{per ogni } s_i \in \text{supporto}$$
+2. L'utilità attesa $u_i(m)$ deve essere maggiore o uguale all'utilità ottenuta deviando verso qualsiasi strategia pura $s_i$ che *non* appartiene al supporto:
+   $$u_i(m) \ge u_i(s_i, m_{-i}) \quad \text{per ogni } s_i \notin \text{supporto}$$
+
+La seconda parte è la definizione classica di assenza di deviazione conveniente. La **prima parte**, invece, è la vera novità e la più sorprendente: se un giocatore assegna una probabilità maggiore di zero a più di una strategia pura (cioè quelle strategie fanno parte del supporto), **l'utilità ottenuta giocando ciascuna di esse deve essere esattamente la stessa**.
+
+#### L'Intuizione Logica: La Legge della Compensazione
+
+Perché le utilità devono essere identiche per tutte le strategie nel supporto? Facciamo un ragionamento per assurdo.
+
+Immagina che la tua utilità totale $u_i(m)$ sia una combinazione lineare (una media pesata dalle probabilità) di diversi valori di utilità associati alle strategie pure nel supporto. 
+* Se una di queste strategie pure ti dà un'utilità inferiore alla media e un'altra ti dà un'utilità superiore, cosa succede?
+* Per la "legge di compensazione", potresti fare una deviazione unilaterale vantaggiosa: basta **diminuire la probabilità** di giocare l'alternativa con utilità più bassa e **aumentare la probabilità** di giocare quella con utilità più alta.
+
+Modificando i pesi in questo modo, la tua utilità attesa complessiva aumenterebbe. Di conseguenza, la situazione iniziale *non* poteva essere un equilibrio di Nash, perché hai appena trovato una deviazione unilaterale profittevole.
+
+L'unico modo per evitare che esista una deviazione conveniente (mantenendo una miscela di più strategie) è che **tutte le strategie pure presenti nel supporto diano esattamente lo stesso identico payoff**.
+
+> **Concetto Chiave:** In un equilibrio di Nash misto, il giocatore è "indifferente" tra tutte le strategie pure che sceglie di giocare con probabilità non nulla, perché ciascuna di esse gli garantisce esattamente lo stesso payoff atteso.
+
+#### Corollario sulle Strategie Pure
+Come conseguenza di questo teorema, la definizione di equilibrio di Nash in strategie miste è perfettamente coerente con quella in strategie pure. Se la strategia mista è in realtà una strategia pura, il supporto è composto da un unico elemento (un *singleton*) e il teorema si riduce alla definizione standard di assenza di deviazione unilaterale.
 
 ---
 
-#### L'interpretazione basata sulle credenze (*Beliefs*)
+### Calcolo dell'Equilibrio Misto: Il Gioco "Battaglia dei SessI" (Battle of the Sexes)
 
-La svolta concettuale consiste nel comprendere che l'incertezza espressa dalle strategie miste non rifplica l'indecisione o l'erraticità del singolo giocatore, bensì **la percezione degli avversari**.
+Ora che abbiamo il Teorema di Caratterizzazione, possiamo usarlo come uno strumento pratico per calcolare gli equilibri di Nash misti nei giochi. Vediamo come applicarlo alla **Battaglia dei Sessi** (*Battle of the Sexes*).
 
-* Io so esattamente cosa ho deciso di giocare (la mia scelta è determinata, anche se non la comunico).
-* Dal punto di vista dell'avversario, tuttavia, la mia mossa è del tutto incerta. 
+Ricordiamo la dinamica: Anna e Brian devono scegliere tra un film Romantico ($R$) e un film di fantascienza ($S$). Entrambi preferiscono stare insieme, ma Anna preferisce $R$ e Brian preferisce $S$. 
+Oltre ai due noti equilibri in strategie pure $(R, R)$ e $(S, S)$, vogliamo scoprire se esiste un equilibrio in strategie miste.
 
-Se due giocatori sono perfettamente razionali in un gioco come *Odds and Evens*, la loro credenza corretta sull'avversario è proprio di totale incertezza (ipotizzare che l'altro giochi $50/50$). Se un giocatore commettesse l'errore di credere che l'avversario scelga deterministicamente un'opzione, adatterebbe la sua risposta di conseguenza, diventando vulnerabile a una contromossa.
+#### Impostazione del Problema
+Supponiamo che:
+* Anna scelga la strategia $R$ con probabilità $q$ (e quindi $S$ con probabilità $1-q$).
+* Brian scelga la strategia $R$ con probabilità $r$ (e quindi $S$ con probabilità $1-r$).
+
+La strategia mista congiunta è quindi definita dalla coppia $(q, r)$.
+
+Usando le probabilità, possiamo calcolare l'utilità attesa per Anna ($u_A$) e per Brian ($u_B$) in funzione delle loro scelte. Per esempio, l'utilità attesa di Anna sarà una combinazione lineare basata sui payoff del gioco ponderati per le probabilità $q$ e $r$.
+
+#### Applicazione del Teorema di Caratterizzazione
+Poiché cerchiamo un equilibrio misto in cui entrambi i giocatori scelgono entrambe le opzioni con probabilità strettamente compresa tra 0 e 1, il supporto per entrambi comprende sia $R$ che $S$.
+
+Per il Teorema di Caratterizzazione, l'utilità attesa di Anna deve essere uguale sia che scelga la pura strategia $R$ (corrispondente al valore di probabilità $1$ per la sua scelta) sia che scelga $S$ (corrispondente al valore $0$). Lo stesso vale per Brian.
+
+Impostiamo l'equazione per Anna, uguagliando il payoff derivante dal giocare la sua prima pure strategy e la seconda:
+* Se Anna gioca $R$ con certezza ($A = 1$), il suo payoff atteso dipende interamente dalla probabilità $r$ di Brian.
+* Se Anna gioca $S$ con certezza ($A = 0$), il payoff atteso cambia.
+
+Sviluppando l'espressione analitica dell'utilità di Anna basata sulla miscela $(q, r)$ eguagliando le opzioni pure, otteniamo il valore della strategia dell'avversario. Nello specifico:
+* Imponendo la condizione di indifferenza per Anna, ricaviamo la probabilità ottimale per **Brian**: 
+  $$r = \frac{1}{3}$$
+* Imponendo la condizione di indifferenza per Brian, ricaviamo la probabilità ottimale per **Anna**: 
+  $$q = \frac{2}{3}$$
+
+> **Nota:** Ricorda il "trucco" pratico per i problemi binari: imponendo la condizione di indifferenza per un giocatore, si risolve l'equazione trovando la probabilità della mossa *dell'altro* giocatore.
+
+Abbiamo così trovato un nuovo equilibrio di Nash in strategie miste:
+$$(q, r) = \left(\frac{2}{3}, \frac{1}{3}\right)$$
+dove Anna sceglie $R$ con probabilità $\frac{2}{3}$ e Brian sceglie $R$ con probabilità $\frac{1}{3}$ (il che significa che Brian sceglie $S$ con probabilità $\frac{2}{3}$, assecondando la sua preferenza per la fantascienza).
+
+#### Interpretazione Intuitiva dell'Equilibrio Misto
+Cosa significa questo risultato a livello pratico? 
+Nei giochi come *Pari o Dispari* (Odds and Evens), la soluzione di equilibrio è simmetrica e imprevedibile al $50\%$ ($\frac{1}{2}, \frac{1}{2}$), proprio come il lancio di una moneta equa.
+
+Nella *Battaglia dei Sessi*, invece, le preferenze sono asimmetriche (Anna ama il romantico, Brian la fantascienza). La soluzione mista riflette questa asimmetria:
+* Anna sceglie il suo film preferito ($R$) più spesso ($\frac{2}{3}$ delle volte).
+* Brian sceglie il suo film preferito ($S$) più spesso (ovvero sceglie $R$ solo $\frac{1}{3}$ delle volte).
+
+Questo comportamento randomizzato è più vicino a certe dinamiche reali rispetto alla rigidità delle strategie pure. 
+
+*Un'ultima riflessione:* Può capitare che, seguendo questa pianificazione casuale, Anna e Brian vadano a finire in cinema diversi (perché le probabilità a volte non si allineano). Tuttavia, l'equilibrio di Nash non va visto come il risultato di un singolo tentativo isolato, ma come **la strategia di pianificazione ottima a lungo termine** per massimizzare i propri payoff attesi in condizioni di incertezza.
+
+---
+
+### Il Teorema di Nash e l'Introduzione delle Strategie Miste
+
+#### Il Teorema di Nash e il postulato delle strategie miste
+Osservando i giochi in forma normale, ci accorgiamo che molti di essi sembrano non possedere alcun equilibrio di Nash in strategie pure (come nel caso del gioco *Pari e Dispari* (Odds and Evens)). Per risolvere questa impasse, John Nash ha adottato un approccio concettualmente simile a quello dei fisici teorici: quando un modello teorico presenta una lacuna ma un'architettura elegante, si ipotizza l'esistenza dell'elemento mancante per completare il quadro. 
+
+Nash ha quindi postulato che i giocatori, anziché scegliere in modo deterministico una singola mossa, possano **randomizzare** la propria scelta. Questo comportamento può condurre a una situazione stabile in cui nessun giocatore ha un incentivo unilaterale a deviare, definendo così un **equilibrio di Nash (Nash Equilibrium)** in strategie miste.
+
+> **Concetto Chiave: Il Teorema di Esistenza di Nash (1950)**
+> *Qualsiasi gioco con insiemi di strategie finiti possiede almeno un equilibrio di Nash, purché si permetta l'uso di strategie miste.*
+
+Questo teorema garantisce l'esistenza di una soluzione per ogni gioco finito. Tuttavia, presenta alcuni limiti:
+1. È un teorema di sola **esistenza**: ci dice che la soluzione esiste, ma non spiega quanto sia facile o difficile calcolarla effettivamente.
+2. In alcuni giochi gli equilibri possono essere molteplici (ad esempio, nella *Battaglia dei Sessi* (Battle of Sexes) ne abbiamo tre), richiedendo un criterio di selezione tra di essi.
+
+---
+
+#### Il problema dell'interpretazione fisica e razionale delle strategie miste
+Accettare le strategie miste dal punto di vista matematico è semplice, ma sorge un problema di interpretazione fisica e comportamentale: ha senso per dei giocatori **razionali** affidarsi al caso? 
+
+Se un giocatore decide di lanciare una moneta per scegliere cosa fare, sta abdicando alla propria razionalità. Inoltre, alla fine del gioco, il giocatore dovrà comunque compiere un'azione concreta (giocare una strategia pura). Nessuno gioca "metà di una mossa": nel momento dell'esecuzione, la scelta diventa deterministica. Nel corso del tempo sono state proposte diverse interpretazioni per dare un senso concreto alle strategie miste:
+
+1. **La Legge dei Grandi Numeri (Law of Large Numbers):**
+   Se un gioco viene ripetuto un numero molto elevato di volte ($M$ volte) e il giocatore sceglie di agire con una certa probabilità $Q$, otterrà una frequenza di successi pari a $Q \cdot M$. 
+   *Limite dell'approccio:* La teoria dei giochi studia tipicamente giochi *statici a informazione completa* giocati **una sola volta** (one-shot). Anche ipotizzando di ripetere il gioco più volte azzerando la memoria, i giocatori reali mantengono memoria della storia passata.
+
+2. **La Logica Sfumata (Fuzzy Logic):**
+   Ispirata alla logica fuzzy sviluppata nel XX secolo, questa interpretazione suggerisce che giocare con probabilità $1/2$ (come nel gioco *Pari e Dispari*) non significhi tirare a sorte, bensì trovarsi in uno stato di "indcisione" o in una condizione intermedia tra zero e uno.
+
+3. **L'Interpretazione tramite Credenze (Beliefs) — *La più accettata in Teoria dei Giochi moderna***
+   L'incertezza descritta dalle strategie miste non riflette una natura erratica o casuale del singolo giocatore, ma **la mancanza di informazione dell'avversario**.
+   * Io so esattamente cosa ho deciso di giocare (la mia scelta è determinessa nella mia mente, anche se non la comunico).
+   * Dal punto di vista del mio avversario, tuttavia, la mia mossa è del tutto incerta.
+   
+Se i giocatori sono razionali, la loro credenza corretta in giochi di puro conflitto come il *Pari e Dispari* è proprio l'ammissione di ignoranza: *"Non so cosa farà l'avversario"*. Se ipotizzassimo erroneamente che l'avversario giochi una determinata mossa pura, commetteremmo un errore sfruttabile. L'atteggiamento ottimale è dunque quello di assegnare una distribuzione di probabilità alle mosse dell'avversario.
+
+---
+
+#### La previsione dell'imprevedibilità
+Applicando l'interpretazione tramite le credenze, arriviamo a un risultato paradossale ma coerente: **riusciamo a prevedere che non è possibile prevedere**.
 
 ```mermaid
 flowchart TD
-    A["Giocatore A (Razionale)"] -->|"Non sa cosa farà B"| B["Credenza: B gioca 50/50"]
-    C["Giocatore B (Razionale)"] -->|"Non sa cosa farà A"| D["Credenza: A gioca 50/50"]
-    B --> E["Risposta Ottimale (Best Response)"]
-    D --> E
-    E --> F["Equilibrio di Nash in Strategie Miste"]
-
-    style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    style C fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    style F fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    A["Giocatore A (Razionale)"] -->|"Non sa cosa farà B"| B["Assegna probabilità 50/50"]
+    C["Giocatore B (Razionale)"] -->|"Non sa cosa farà A"| D["Assegna probabilità 50/50"]
+    E["Osservatore Esterno"] -->|"Conosce la razionalità di entrambi"| F["Prevede correttamente che entrambi giocano 50/50"]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style C fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#bbf,stroke:#333,stroke-width:2px
+    style F fill:#bfb,stroke:#333,stroke-width:2px
 ```
 
-Paradossalmente, attraverso questa chiave di lettura, raggiungiamo l'obiettivo del teorema di Nash: **riusciamo a prevedere che non possiamo prevedere**, e questa previsione collettiva risulta essere perfettamente corretta. Nel *Dilemma del Prigioniero*, la credenza corretta è che l'altro confesserà (strategia pura); in giochi di puro conflitto come *Odds and Evens*, la credenza corretta è mista. 
+Se osserviamo due persone che giocano a *Pari e Dispari* per strada, assumendo che siano entrambe perfettamente razionali:
+* Il Giocatore A crede che l'avversario giochi $50/50$.
+* Il Giocatore B crede che l'avversario giochi $50/50$.
+* L'osservatore esterno deduce esattamente la stessa cosa.
 
-In conclusione, l'interpretazione tramite le credenze rispetta il significato fisico dell'impossibilità di prevedere le mosse immediate, elevando però l'analisi a un livello superiore di deduzione comune tra agenti intelligenti.
+In questo modo, la previsione teorica risulta corretta: **l'equilibrio di Nash viene raggiunto proprio nel momento in cui prevediamo di non poter prevedere le mosse specifiche dell'avversario**, rispettando pienamente il significato fisico e razionale del modello.
