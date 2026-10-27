@@ -7,7 +7,7 @@ In questa lezione completiamo la trattazione dei **Metodi Monte Carlo (Monte Car
 I punti chiave trattati includono:
 
 * **Inquadramento Model-Free**: Analisi del contesto in cui le dinamiche dell'ambiente — rappresentate dalla matrice delle probabilità di transizione $P$ e dalla funzione di ricompensa $R$ — non sono note a priori, rendendo necessario l'apprendimento basato esclusivamente sull'esperienza generata dall'interazione.
-* **Transizione da $V(s)$ a $Q(s,a)$ nel Controllo**: Motivazione teorica del passaggio dalla funzione del valore di stato $V(s)$ alla funzione del valore di stato-azione $Q(s,a)$ (*Action-Value Function*) per consentire il *Miglioramento Generalizzato della Politica (Generalized Policy Improvement - GPI)* senza un modello dell'ambiente.
+* **Transizione da $V(s)$ a $Q(s,a)$ nel Controllo**: Motivazione teorica del passaggio dalla funzione del valore di stato $V(s)$ alla funzione del valore di stato-azione $Q(s,a)$ (*Action-Value Function*) per consentire il *Iterazione Generalizzata della Politica (Generalized Policy Iteration - GPI)* senza un modello dell'ambiente.
 * **Trade-off tra Esplorazione ed Esploitamento (*Exploration vs. Exploitation*)**: Limiti degli approcci *On-Policy* nel raggiungere una politica strettamente ottimale mantenendo al contempo un'adeguata copertura esplorativa nello spazio stato-azione.
 * **Paradigma *Off-Policy***: Concetto di disaccoppiamento tra la **Politica Comportamentale (*Behavior Policy*)**, utilizzata per generare le traiettorie ed esplorare l'ambiente, e la **Politica Target (*Target Policy*)**, ovvero la politica ottimale oggetto di valutazione e miglioramento.
 * **Introduzione al TD Learning**: Contestualizzazione dell'algoritmo di Temporal Difference come pilastro dell'RL, in grado di coniugare la capacità dei metodi Monte Carlo di apprendere direttamente dall'esperienza senza modello con la tecnica del *bootstrapping* tipica della Programmazione Dinamica (*Dynamic Programming*).
@@ -38,7 +38,7 @@ Di seguito viene illustrato il percorso di completamento del programma in vista 
 ```mermaid
 flowchart TD
     A["Iscrizione tramite Google Form"] --> B["Lezione di Lunedì (Lezione 10)"]
-    B --> C["Invio argomenti critici su Moodle"]
+    B --> C["Invio dubbi via e-mail (annuncio Moodle)"]
     C --> D["Lezione di Martedì (Ripasso mirato)"]
     D --> E["Primo Esame Parziale"]
 
@@ -53,7 +53,7 @@ flowchart TD
 
 *   **Iscrizione alla prova:** È necessario registrarsi tramite il Google Form dedicato entro la fine della settimana corrente per essere inclusi nell'elenco ufficiale dei candidati.
 *   **Completamento del programma:** La Lezione 10 (prevista per lunedì prossimo) definirà il limite definitivo degli argomenti oggetto di valutazione. Per chi desidera portarsi avanti con lo studio, la registrazione dello stesso argomento relativa all'anno accademico precedente è già accessibile sul portale.
-*   **Sessione di ripasso:** La lezione di martedì prossimo sarà interamente dedicata a un ripasso sintetico dei concetti storicamente più ostici. Gli argomenti trattati verranno selezionati sulla base delle segnalazioni e dei dubbi inviati dagli studenti tramite la piattaforma Moodle entro lunedì.
+*   **Sessione di ripasso:** La lezione di martedì prossimo sarà interamente dedicata a un ripasso sintetico dei concetti storicamente più ostici. Gli argomenti trattati verranno selezionati sulla base delle segnalazioni e dei dubbi inviati dagli studenti via e-mail entro lunedì, in risposta all’annuncio su Moodle.
 
 ---
 
@@ -61,7 +61,7 @@ flowchart TD
 
 I dettagli operativi per lo svolgimento della prova scritta sono i seguenti:
 
-*   **Durata:** $1.5\text{ ore}$ ($90\text{ minuti}$).
+*   **Durata indicativa annunciata:** $1.5\text{ ore}$ ($90\text{ minuti}$).
 *   **Strumenti consentiti:** Calcolatrice scientifica e materiale da scrittura.
 
 > **Concetto Chiave: Gestione dello Spazio e della Valutazione**  
@@ -71,7 +71,7 @@ La struttura della prova riprenderà la tipologia di quesiti (esercizi numerici 
 
 ---
 
-<h3>Quadro Generale: Transizione a RL Model-Free e Necessità di $Q(s,a)$</h3>
+### Quadro Generale: Transizione a RL Model-Free e Necessità di $Q(s,a)$
 
 Nel passaggio ai metodi di **Apprendimento per Rinforzo** (*Reinforcement Learning - RL*) veri e propri, abbandoniamo l'ipotesi della Programmazione Dinamica in cui la matrice delle probabilità di transizione $P$ e la funzione di ricompensa $R$ sono note. Siamo nel contesto *model-free*: l'agente deve imparare esclusivamente attraverso l'esperienza e i dati raccolti interagendo con l'ambiente.
 
@@ -97,12 +97,12 @@ flowchart TD
 
 ---
 
-<h3>Distinzione tra Politiche On-Policy e Off-Policy</h3>
+### Distinzione tra Politiche On-Policy e Off-Policy
 
 Nelle lezioni precedenti sono stati trattati approcci **On-Policy**: la politica che raccoglie i dati coincide con la politica che si sta cercando di valutare e migliorare.
 
 #### Limiti dell'approccio On-Policy
-Se si utilizza un'unica politica sia per esplorare che per ottimizzare, la politica target non potrà mai diventare strettamente ottimale. Tecniche come le *Exploring Starts* o le politiche $\epsilon$-soft continuano a inserire azioni casuali/esplorative anche dopo aver appreso la struttura del problema, impedendo il raggiungimento della prestazione d'ottimo teorico.
+Con una politica $\epsilon$-soft a esplorazione persistente ($\epsilon>0$ fisso), si continuano a scegliere anche azioni subottimali: in generale si cerca la migliore politica entro tale vincolo, non una politica greedy ottimale senza vincoli. Questo non è un limite universale di tutti i metodi on-policy: le Exploring Starts riguardano la scelta iniziale stato-azione e non impongono esplorazione in ogni passo; ridurre opportunamente $\epsilon$ nel tempo è un altro caso distinto. Il punto della lezione è separare una behavior policy esplorativa dalla target policy valutata o migliorata.
 
 #### I vantaggi del paradigma Off-Policy
 Negli approcci **Off-Policy** si disaccoppiano le responsabilità definendo due politiche distinte:
@@ -110,13 +110,13 @@ Negli approcci **Off-Policy** si disaccoppiano le responsabilità definendo due 
 2. **Politica Comportamentale** (*Behavior Policy*, $b$): La politica utilizzata dall'agente per interagire con l'ambiente e generare l'esperienza (dati).
 
 Le motivazioni principali per adottare un approccio Off-Policy sono:
-* **Riutilizzo dell'esperienza passata**: I dati nell'apprendimento automatico sono preziosi. Nello schema di *Generalized Policy Improvement* (GPI), ad ogni aggiornamento della politica i dati generati dalle politiche precedenti ($\pi, \pi', \pi'', \dots$) diventerebbero inutilizzabili in un regime on-policy. L'off-policy permette di riusarli.
+* **Riutilizzo dell'esperienza passata**: I dati nell'apprendimento automatico sono preziosi. Nello schema di *Generalized Policy Iteration* (GPI), ad ogni aggiornamento della politica i dati generati dalle politiche precedenti ($\pi, \pi', \pi'', \dots$) diventerebbero inutilizzabili in un regime on-policy. L'off-policy permette di riusarli.
 * **Apprendimento da dimostrazioni esterne**: È possibile aggiornare la politica target osservando le azioni generate da un altro agente (umano o sistema esperto).
 * **Esplorazione separata dall'ottimizzazione**: La politica $b$ può rimanere altamente esplorativa, mentre la politica $\pi$ converge verso una strategia greedy ed ottimale.
 
 ---
 
-<h3>I Tre Requisiti Fondamentali per l'Off-Policy</h3>
+### I Tre Requisiti Fondamentali per l'Off-Policy
 
 Per poter applicare un approccio Off-Policy, devono essere soddisfatte **tre condizioni essenziali**:
 
@@ -125,7 +125,7 @@ Per poter applicare un approccio Off-Policy, devono essere soddisfatte **tre con
 
 > **Concetto Chiave: Condizione di Copertura**
 > 
-> Formamente, per ogni stato $s \in \mathcal{S}$ e azione $a \in \mathcal{A}$:
+> Formalmente, per ogni stato $s \in \mathcal{S}$ e azione $a \in \mathcal{A}$:
 > $$\pi(a|s) > 0 \implies b(a|s) > 0$$
 > Se la politica target $\pi$ assegna una probabilità positiva all'azione $a$ nello stato $s$, la politica comportamentale $b$ **deve** avere una probabilità strettamente maggiore di zero di eseguire quella stessa azione. In caso contrario, non si raccoglieranno mai dati su quell'azione e sarà impossibile valutare $\pi$.
 
@@ -133,7 +133,7 @@ Per poter applicare un approccio Off-Policy, devono essere soddisfatte **tre con
 
 ---
 
-<h3>Derivazione dell'Importance Sampling</h3>
+### Derivazione dell'Importance Sampling
 
 #### Intuizione: Esempio dei Multi-Armed Bandit
 Immaginiamo due giocatori che azionano due leve condivise seguendo una politica comportamentale $b$ bilanciata (scelta casuale 50/50 per le azioni $a_1$ e $a_2$). Una terza persona osserva i risultati ottenuti dai due giocatori senza spendere denaro proprio: questa osservatrice vuole valutare la propria politica target $\pi$, la quale sceglierebbe l'azione $a_1$ con probabilità del $75\%$ e l'azione $a_2$ con il $25\%$.
@@ -145,6 +145,10 @@ Immaginiamo due giocatori che azionano due leve condivise seguendo una politica 
   $$\text{Peso} = \frac{\pi(a_1)}{b(a_1)} = \frac{0.75}{0.50} = 1.5 \implies \text{Valore Pesato} = 2 \times 1.5 = 3.0$$
 
 L'**Importance Sampling** bilancia la discrepanza tra la frequenza con cui un'azione viene osservata nei dati e la frequenza con cui verrebbe eseguita dalla politica target.
+
+#### Dettaglio dell’esempio dei banditi
+
+La trascrizione include anche un’osservazione dell’azione $a_1$ con ricompensa $-1$: il rapporto $0.75/0.50=1.5$ produce un contributo pesato $-1.5$. La successiva ricompensa $+2$ sulla stessa azione contribuisce $+3$. Questi sono **contributi campionari**, non stime finali: occorre aggregare i campioni con la normalizzazione dello stimatore scelto. Nell’ordinary importance sampling si divide la somma dei contributi per il numero di campioni; nel weighted importance sampling si divide per la somma dei pesi. Non confondere le due medie.
 
 #### Estensione a Traiettorie Complete in RL
 Nei problemi RL sequenziali, un episodio genera una traiettoria composta da una sequenza di stati, azioni e ricompense:
@@ -171,7 +175,7 @@ $$\rho_{t:T-1} = \frac{\prod_{k=t}^{T-1} \pi(A_k|S_k) P(S_{k+1}|S_k, A_k)}{\prod
 
 ---
 
-<h3>Algoritmo Monte Carlo Off-Policy per la Predizione</h3>
+### Algoritmo Monte Carlo Off-Policy per la Predizione
 
 Di seguito viene presentata una versione didattica e semplificata dell'algoritmo di predizione Monte Carlo Off-Policy per la stima di $V(s)$.
 
@@ -193,34 +197,34 @@ Loop per ogni episodio:
     
     Loop all'indietro per t = T-1, T-2, ..., 0:
         G <- gamma * G + R_{t+1}
-        C(S_t) <- C(S_t) + W
-        V(S_t) <- V(S_t) + (W / C(S_t)) * (G - V(S_t))
-        
         W <- W * ( pi(A_t | S_t) / b(A_t | S_t) )
-        
         Se W == 0:
             Interrompi il ciclo dell'episodio corrente (Break)
+
+        C(S_t) <- C(S_t) + W
+        V(S_t) <- V(S_t) + (W / C(S_t)) * (G - V(S_t))
 ```
 
-*(Nota: Passaggio integrato con chiarezza didattica per spiegare la condizione d'arresto del ciclo).*
+**Nota di revisione:** questo è pseudocodice ricostruito dalla trascrizione, non una copia verificata delle slide. Per stimare $V(S_t)$, il rapporto deve includere anche $\pi(A_t|S_t)/b(A_t|S_t)$ **prima** di aggiornare $C$ e $V$. Se $W=0$, si esce prima della divisione, evitando anche $0/0$. Nel caso $Q(S_t,A_t)$ l’azione corrente è già condizionata e l’ordine può essere diverso. La media pesata mostrata qui è una formulazione standard; senza le slide non è possibile certificare che coincida con la variante semplificata richiesta dal docente.
 
 #### Analisi delle caratteristiche dell'algoritmo
-1. **Inizializzazione degli Stati Terminali**: È fondamentale impostare $V(\text{stato terminale}) = 0$. Inizializzarlo a valori diversi compromette la convergenza delle stime.
+1. **Stati terminali:** si adotta la convenzione $V(\text{terminale})=0$, perché non ci sono ricompense successive alla terminazione. Nel Monte Carlo qui scritto il valore terminale non compare nel target $G$; in TD compare invece nel bootstrap dell’ultima transizione.
 2. **Calcolo Backward**: La ricompensa cumulativa $G$ e il peso $W$ vengono calcolati a ritroso (da $T-1$ a $0$) per riutilizzare i sotto-calcoli e ottimizzare la complessità computazionale.
 3. **Condizione di Uscita Anticipata ($W = 0$)**: Se in un qualsiasi passo $t$ la politica target $\pi$ assegna probabilità nulla all'azione scelta dalla politica comportamentale ($\pi(A_t|S_t) = 0$), il peso $W$ diventa zero. Poiché $W$ viene aggiornato moltiplicando i fattori successivi, tutti i passi precedenti nell'episodio avrebbero valore pesato nullo. Interrompere il ciclo backward risparmia calcoli inutili.
 
 > **Osservazione Operativa per il Controllo Monte Carlo Off-Policy**
 > 
-> Sebbene in teoria sia possibile estendere questo schema al problema del Controllo Monte Carlo Off-Policy (sostituendo $V(s)$ con $Q(s,a)$ e applicando un'operazione $\arg\max$), in pratica questo approccio soffre di un'**infinita o elevatissima varianza** dovuta al prodotto continuo dei rapporti di importanza su traiettorie lunghe. 
+> Il docente segnala varianza elevata e scarsa efficacia pratica del controllo Monte Carlo off-policy. Non significa che ogni stimatore abbia sempre varianza infinita: ordinary e weighted importance sampling hanno proprietà diverse. L’estensione al controllo richiede $Q(s,a)$ e miglioramento greedy della target policy.
+> Gli approcci TD per il controllo off-policy saranno trattati successivamente.
 > Per il controllo Off-Policy efficace si rimanda agli approcci basati su *Temporal Difference Learning* (Capitolo 6).
 
 ---
 
 ### Introduzione al Temporal Difference (TD) Learning
 
-L'**Apprendimento per Differenze Temporali** (*Temporal Difference Learning*, o **TD Learning**) rappresenta uno dei concetti più centrali e caratterizzanti dell'intero Apprendimento per Rinforzo (*Reinforcement Learning* - RL). Storicamente, la nascita e il successo del TD Learning nei primi anni '90 hanno segnato una vera e propria svolta nel campo, in particolare grazie a successi celebri come **TD-Gammon**, un algoritmo capace di apprendere a giocare a Backgammon a livelli di gran lunga superiori a quelli umani. 
+**Temporal Difference Learning (TD Learning)** è centrale nel Reinforcement Learning. La lezione cita il successo di **TD-Gammon** nel Backgammon nei primi anni Novanta come esempio storico; non ne deriva che il TD sia nato allora o che quel sistema fosse di gran lunga superiore a tutti gli esseri umani.
 
-Oltre all'ingegneria e all'intelligenza artificiale, le basi matematiche del TD Learning hanno trovato una conferma straordinaria nelle neuroscienze: il meccanismo di rilascio della dopamina nel cervello umano e animale segue una dinamica sovrapponibile a quella dell'errore di differenza temporale.
+La lezione richiama inoltre il legame tra errore di predizione TD e alcuni segnali dopaminergici studiati nelle neuroscienze: è un modello esplicativo di specifici fenomeni, non una descrizione completa del rilascio di dopamina o del cervello.
 
 Dal punto di vista operativo:
 * Restiamo in un contesto a **Modello Libero** (*Model-Free Setting*): non conosciamo la dinamica del mondo (transizioni di stato e ricompense) e dobbiamo apprendere esclusivamente sulla base dei dati e dell'esperienza raccolta.
@@ -240,10 +244,14 @@ Un'informazione imperfetta ma fornita **al momento giusto** ha un valore nettame
 
 #### L'Esempio del Guidatore (Monte Carlo vs. TD)
 Immaginiamo un guidatore che deve tornare a casa dal lavoro:
-* **Approccio Monte Carlo:** Il guidatore stima inizialmente che impiegherà 30 minuti. Durante il viaggio trova traffico improvviso, pioggia e deve fare rifornimento. Tuttavia, **non aggiorna mai la stima** verso i propri familiari lungo il tragitto. Solo quando arriva a casa dopo 43 minuti comunica l'errore commesso.
+* **Approccio Monte Carlo:** Nel primo racconto, il guidatore incontra telefonata, traffico e sosta per la benzina, ma non aggiorna la famiglia durante il tragitto: l’analogia illustra l’attesa fino alla fine dell’episodio prima di apprendere dal ritorno.
 * **Approccio Temporal Difference:** Ogni volta che si verifica un evento (es. entra in autostrada e vede la pioggia), il guidatore **ricalcola immediatamente la stima del tempo rimanente** e aggiorna la conoscenza sul proprio stato.
 
 ---
+
+#### Esempio numerico del tragitto e limiti della ricostruzione
+
+La lezione presenta due racconti del tragitto: uno include telefonata, traffico e benzina; nell’esempio numerico successivo compaiono pioggia, autostrada, camion e l’ultimo tratto verso casa. Non vanno fusi in un’unica sequenza ricostruita. Nel secondo esempio la previsione iniziale è 30 minuti e il tempo effettivo 43. Con $\alpha=1$ e $\gamma=1$, MC aggiorna lo stato iniziale a $30+(43-30)=43$ solo all’arrivo; TD può già aggiornarlo a 40 dopo la prima transizione, usando la ricompensa osservata e la previsione dello stato successivo. La trascrizione non permette di ricostruire con sicurezza tutti i numeri della slide. I risultati intermedi dei due metodi possono differire: non significa che stimino due funzioni di valore diverse.
 
 ### Formulazione Matematica: Dal Metodo Incrementale al TD(0)
 
@@ -288,7 +296,7 @@ $$V(S_t) \leftarrow V(S_t) + \alpha \cdot \left[ R_{t+1} + \gamma V(S_{t+1}) - V
 
 ### Confronto Strutturale: Monte Carlo vs. TD(0)
 
-Mentre il metodo Monte Carlo campiona il ritorno effettivo $G_t$ (che è una stima non distorta, ma ad alta varianza), il metodo TD(0) combina una ricompensa reale osservata $R_{t+1}$ con una stima preesistente $V(S_{t+1})$. Questo introduce un leggero bias iniziale (dovuto alle stime iniziali di $V$), ma riduce enormemente la varianza e permette l'apprendimento *online* passo-passo.
+Monte Carlo usa il ritorno campionato $G_t$; TD(0) usa $R_{t+1}+\gamma V(S_{t+1})$. Il target TD dipende dalle stime correnti, quindi può essere distorto; l’entità del bias non è necessariamente lieve. Il bootstrap può ridurre la varianza rispetto al ritorno completo. Questo confronto non garantisce che TD sia sempre migliore: la lezione rinvia vantaggi e limiti al seguito.
 
 ```mermaid
 flowchart LR
@@ -312,7 +320,7 @@ flowchart LR
 
 ### Algoritmo TD(0) Tabellare
 
-Di seguito viene mostrato lo pseudocodice dell'algoritmo **TD(0)** per la valutazione di una politica dati ($\pi$).
+Di seguito viene mostrato lo pseudocodice dell'algoritmo **TD(0)** per la valutazione di una politica data ($\pi$).
 
 L'agente non attende il termine della traiettoria: all'interno del ciclo dell'episodio, a ogni singolo passo temporale aggiorna la matrice/tabella dei valori di stato $V$.
 
@@ -332,12 +340,12 @@ L'agente non attende il termine della traiettoria: all'interno del ciclo dell'ep
      4. Avanza allo stato successivo: $S \leftarrow S'$.
 
 > **Nota di Terminologia:**
-> * Il suffisso **(0)** in **TD(0)** indica che stiamo effettuando il calcolo considerando un solo passo temporale nel futuro (*1-step lookahead*). Più avanti si estenderà questo concetto alla famiglia di algoritmi $TD(\lambda)$, che include $TD(1), TD(2)$, ecc. Per il momento, quando diciamo "TD Learning" intendiamo la formulazione $TD(0)$.
+> * **TD(0)** è il metodo a un passo studiato qui. Il docente rinvia le varianti a dopo il primo parziale. Precisazione terminologica: nella famiglia $TD(\lambda)$ standard si usa $0\leq\lambda\leq1$; “TD con parametro 2” non è un membro di questa famiglia. I metodi TD a $n$ passi sono una generalizzazione distinta.
 > * La parola **Tabellare** (*Tabular*) specifica che manteniamo la funzione di valore $V(S)$ memorizzata all'interno di una tabella/vettore esplicito per ciascuno stato finito dell'ambiente.
 
 ---
 
-3. Diagrammi di Backup e il Concetto di Bootstrap
+### Diagrammi di Backup e il Concetto di Bootstrap
 
 Nei metodi basati su *Differenze Temporali (Temporal Difference - TD)*, i **diagrammi di backup (backup diagrams)** permettono di visualizzare graficamente come l'informazione del valore fluisce all'indietro (*back-up*) da stati futuri a stati presenti.
 
@@ -365,7 +373,7 @@ flowchart TD
 
 ---
 
-### 3. Esempio Pratico: Il Random Walk a 5 Stati
+### Esempio Pratico: Il Random Walk a 5 Stati
 
 Per osservare concretamente la differenza operativa tra Monte Carlo e TD(0), consideriamo un ambiente di benchmark semplificato: una passeggiata aleatoria (*Random Walk*) composta da 5 stati non terminali.
 
@@ -387,16 +395,16 @@ flowchart LR
   - Fattore di sconto: $\gamma = 1$.
 
 #### Valore Vero della Funzione di Stato $V_\pi(s)$:
-In questo scenario non ci sono penalità per ogni passo compiuto (non c'è un costo temporale $-1$). La politica ottimale consisterebbe nel muoversi sempre verso destra per finire in $T_R$. Seguendo la politica casuale indicata, la funzione di valore reale $V_\pi(s)$ varia linearmente da sinistra a destra:
+Non ci sono penalità per passo e $\gamma=1$: andare sempre a destra è una politica ottimale, ma non è l’unica. È ottimale anche una politica che raggiunga $T_R$ con probabilità 1, senza raggiungere $T_L$, pur compiendo deviazioni. Questa osservazione riguarda il controllo; qui si valuta invece la politica casuale equiprobabile, i cui valori veri crescono linearmente da sinistra a destra:
 - Lo stato centrale $C$ ha un valore esatto di $V_\pi(C) = 0.5$ (50% di probabilità di finire in $T_R$ con $+1$ e 50% di finire in $T_L$ con $0$).
 - Procedendo verso destra, i valori reali aumentano: $V_\pi(A) = 1/6 \approx 0.17$, $V_\pi(B) = 2/6 \approx 0.33$, $V_\pi(C) = 3/6 = 0.5$, $V_\pi(D) = 4/6 \approx 0.67$, $V_\pi(E) = 5/6 \approx 0.83$.
 
 #### Inizializzazione del Modello:
-Impostiamo le stime iniziali per tutti gli stati intermedie a $V_0(s) = 0.5$ per ogni $s \in \{A, B, C, D, E\}$ con un tasso di apprendimento $\alpha = 0.5$.
+Impostiamo le stime iniziali per tutti gli stati intermedi a $V_0(s) = 0.5$ per ogni $s \in \{A, B, C, D, E\}$ con un tasso di apprendimento $\alpha = 0.5$.
 
 ---
 
-### 3. Confronto Dinamico: Monte Carlo vs. TD(0)
+### Confronto Dinamico: Monte Carlo vs. TD(0)
 
 Analizziamo cosa accade durante la fase d'apprendimento nei primi episodi.
 
@@ -405,7 +413,7 @@ Analizziamo cosa accade durante la fase d'apprendimento nei primi episodi.
 ```
 
 1. **Comportamento di TD(0):**
-   Durante il percorso lungo gli stati intermedie ($C \to D \to E$), la ricompensa è $R=0$ e i valori stimati iniziali sono uguali ($0.5$). L'errore TD è quindi zero:
+   Durante il percorso lungo gli stati intermedi ($C \to D \to E$), la ricompensa è $R=0$ e i valori stimati iniziali sono uguali ($0.5$). L'errore TD è quindi zero:
    $$\delta_t = R_{t+1} + \gamma V(S_{t+1}) - V(S_t) = 0 + 0.5 - 0.5 = 0$$
    Non viene eseguito alcun aggiornamento fino all'ultimo passo. Solo nell'istante in cui l'agente entra nello stato terminale $T_R$ ottenendo $R=+1$, l'algoritmo aggiorna lo stato **immediatamente precedente** ($E$):
    $$V(E) \leftarrow V(E) + \alpha \left[ 1 - V(E) \right] = 0.5 + 0.5 \times (1 - 0.5) = 0.75$$
@@ -423,9 +431,9 @@ Analizziamo cosa accade durante la fase d'apprendimento nei primi episodi.
 
 ---
 
-### 3. Valutazione delle Prestazioni ed Efficienza Campionaria
+### Valutazione delle Prestazioni ed Efficienza Campionaria
 
-Per valutare quantitativamente le prestazioni dei due approcci rispetto al numero di episodi elaborati, si calcola l'**Errore Quadratico Medio (Root Mean Square Error - RMSE)** tra le stime apprese e i valori reali forniti dall'oracolo:
+Per valutare quantitativamente le prestazioni dei due approcci rispetto al numero di episodi elaborati, si calcola l'**Radice dell’Errore Quadratico Medio (Root Mean Square Error - RMSE)** tra le stime apprese e i valori reali forniti dall'oracolo:
 
 $$RMSE = \sqrt{\frac{1}{|\mathcal{S}|} \sum_{s \in \mathcal{S}} \left( V_{\text{true}}(s) - V(s) \right)^2}$$
 
@@ -442,11 +450,11 @@ Errore RMSE
 ```
 
 #### Confronto Risultati:
-- **Tasso di Apprendimento ($\alpha$):** Variando $\alpha$, entrambe le famiglie di algoritmi convergono verso il valore reale al crescere degli episodi.
-- **Velocità di Convergenza:** **TD(0) risulta significativamente più veloce di Monte Carlo**. Ha bisogno di un numero nettamente inferiore di episodi per ridurre drasticamente l'errore RMSE.
+- **Tasso di apprendimento ($\alpha$):** il grafico confronta diversi valori di $\alpha$. Con un passo costante non si garantisce convergenza esatta: le stime possono continuare a oscillare. Le condizioni di convergenza richiedono ipotesi ulteriori, fra cui visita sufficiente degli stati e una scelta appropriata dei passi.
+- **Velocità nell’esempio:** nel random walk mostrato, TD(0) riduce l’RMSE con meno episodi delle curve Monte Carlo confrontate. Non è un risultato universale per ogni ambiente o iperparametro.
 
 > **Concetto Chiave — Efficienza Campionaria:**
-> In contesti operativi e reali (come la teoria dei *Multi-Armed Bandits* o il RL in contesti medici/finanziari), minimizzare il numero di episodi necessari ad apprendere equivale a minimizzare il **Rimpianto (Regret)**. TD(0) dimostra una migliore efficienza campionaria in quanto sfrutta immediatamente la struttura ricorsiva dell'ambiente ad ogni singola transizione.
+> Apprendere con meno esperienza può ridurre il costo degli errori durante l’interazione: questo motiva il richiamo del docente al regret nei banditi. **Efficienza campionaria e regret non sono equivalenti**: l’RMSE qui valuta la predizione sotto una politica fissata, mentre il regret misura perdita cumulata di ricompensa rispetto a un riferimento.
 
 ---
 
@@ -461,6 +469,13 @@ Errore RMSE
 >   - Struttura della prova: sarà del tutto in linea con gli esami e le prove parziali degli anni precedenti.
 > - **Domande ed Esercizi Specifici Citati dal Docente**:
 >   - **Off-Policy Control Monte Carlo**: È stata espressamente indicata come possibile domanda d'esame/parziale la richiesta di abbozzare lo pseudocodice di un approccio di controllo Monte Carlo off-policy (sfruttando gli elementi e i concetti visti a lezione).
->   - **Off-Policy Monte Carlo (Prediction)**: All'esame verrà richiesto lo pseudocodice nella versione semplificata mostrata a lezione sulle slide (e non quella più complessa del libro).
+>   - **Off-Policy Monte Carlo (Prediction)**: Il docente indica di usare lo pseudocodice nella versione semplificata mostrata a lezione sulle slide (e non quella più complessa del libro).
+>   - **Indicazioni di lettura:** le sezioni 5.5 e 5.6 sull’importance sampling sono importanti; usare l’algoritmo semplificato delle slide. La dimostrazione del miglioramento per politiche epsilon-soft e gli ulteriori commenti sul controllo MC off-policy sono indicati come facoltativi.
+>   - **Peso iniziale:** iniziare con $W=1$, elemento neutro del prodotto. Il peso corregge le probabilità delle traiettorie, non misura quanto una politica sia “migliore” di un’altra.
 >   - **Definizioni fondamentali**: Viene espressamente richiesto di saper definire concetti e formule chiave come il **TD Target** e il **TD Error**.
 >   - **Diagrammi di backup (Backup Diagrams)**: Potrebbe essere richiesto di disegnare/mostrare un diagramma di backup per verificare la comprensione concettuale degli algoritmi.
+
+> **Precisazione sulla probabilità della traiettoria:** nelle formule con $P(S_{k+1}|S_k,A_k)$ si considera la sequenza di stati e azioni, condizionata allo stato iniziale. Per una traiettoria che includa anche le ricompense campionate, si usa invece la probabilità congiunta $p(S_{k+1},R_{k+1}|S_k,A_k)$. Anche questi fattori si elidono nel rapporto fra politiche, poiché l’ambiente è lo stesso.
+
+
+> **Revisione locale del 26 ottobre 2026:** contenuto confrontato con la trascrizione fornita; precisazioni tecniche editoriali distinte dalle parole del docente. Esempi espansi e diagrammi sono ausili didattici, non riproduzioni certificate delle slide. Audio e trascrizione originali conservati.
