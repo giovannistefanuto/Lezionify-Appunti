@@ -1,0 +1,124 @@
+--- [Parte 1/9 • 00:00 - 14:46] ---
+
+Okay, good afternoon. Let's start today lab activity. So, I leave the word to Francesco and Dennis, and... Yeah, today we're going to see a more practical lesson about bag, rosbag, transformations, AprilTags, and RViz. So, we're going to start with an introduction about rosbag, that are basically a ROS tool used to... Sorry. So, we're going to start with ROS bags, that are a ROS tool used for recording and playback of ROS messages. Then we are going to see transformations, so reference frame transforms, and how we can manage this transforms in ROS 2. Then we're going to see AprilTags, and finally we're going to see RViz. We have already seen something about RViz with Anna in previous lessons. So, let's start from ROS bags. Let's start with an example. Here in the right you can see a a robot which is equipped with many sensors. For example, you can see cameras, you can see lidars, wheels, and other controllers. Each of these sensors, when we move the robot, continuously publish data on on different topics, on the corresponding topics. By the way, we should also have a way to collect and preserve all these data for a for a later use. For example, we want to run experiments, collect data, and save these data, and maybe we want to analyze these data after the experiments without without rerunning the the robot. So, ROS bags allows us to record messages from multiple topics, preserving also their timing information. So, for example, we can run experiments with our robot. During the experiment, we can collect our data using ROS bags, and then we can replay our experiment replaying our bags without accessing the the real the physical robot. So, we can, in some way, resimulate our experiment. This is really useful for, for example, for analyzing sensor data offline, and also for debugging and testing our algorithms without accessing the the real the physical robot. So, a ROS bag is basically a ROS tool used for recording and replaying messages exchanged through our ROS 2 interfaces, so topics, services, and actions. When we record a bag, we record messages together with their timestamp. This is really important because it means that we also maintain the temporal information of our messages. ROS 2 bags also supports multiple topics and messages types, so also custom messages. And once we we record a bag with we record a bag of our experiment, we are able to replay our bag, our sensor data, without the original hardware, okay? Once we have recorded the bag, so we can replay the data replaying the bag, and in this way, basically, we replaying the bag, we we republish the recorded messages in the corresponding topics. In this way, the other nodes should only subscribe to the topic as always, and they will do with the original publisher. So, basically, a ROS bag is just a recording of ROS 2 communication, so ROS 2 messages between nodes over time. Here you can see the the main commands for managing the bags. So, the to record a to record specific topics, the command is this one, so ros2 bag record -o and bag-name. -o is used to to specify the name of the bag, and then we specify also the list of topics that we want to record. After that, after we have recorded the the the bag, we use the command ros2 bag info in order to inspect some information about the the the bag, and then we can also replay the bag with the command ros2 bag play. You can also find some other commands and options in the official documentation. By the way, we can try some we can try recording some some bags. So, as always, we we're going to use the publisher and subscriber nodes from previous lessons. So, we can run, for example, the the talker node. So, with the command ros2 run, the name of the package and the name of the node. So, as always, we have the node that it's just publishing an integer. On the other terminal, we can run the subscriber. Okay? So, now the the listener is reading the the message from the topic. We can also inspect the topic with the function with the command ros2 topic list. So, and we can see that the publisher is publishing on the topic called /topic, okay? Now, we want to record messages published on the topic. So, here you can see the command. The command is ros2 bag record -o and the name of the topic, oh, the name of the bag, example_bag, for example, and the name of the topic. Okay. So, now we are recording the messages published by our publisher. We can also, for example, rerun the talker. In this way, we start from zero. And then, to stop the recording, we just have to make Ctrl+C. So, now we can also stop the the the publisher, and we can see our our bag in a in the folder, so here you can see our recorded bag. Now, we can inspect some information about this bag with the command ros2 bag info bag-name. And here you can see some information. So, you can see the the name, you can see the duration of the bag, you can see the number of messages, and also the topic that we are recording. In this case, the topic is /topic, and we can see also the type of the message of the topic. Okay? So, now we are ready to replay the bag. The command is ros2 bag play and the name of the bag. ros2 bag play. And here you can see that the our subscriber is reading the the the messages published by our bag. So, basically, our bag is just republishing the the message that it is recorded. So, this is this can be really useful for many many cases, because in this way we can acquire data from our experiment, and then we can rerun a simulation of our experiment just playing the the bags. So, maybe you can take 5 minutes in order to try this command, so record a bag, and try to replay it.
+
+--- [Parte 2/9 • 14:44 - 27:33] ---
+
+Did you manage to record, right? Okay, we can restart. So, we can move on with the transforms. So, it is another topic, let's say. So, we have seen that a robot typically has multiple sensors, each one with its own coordinate frame. For example, we can have a camera that detects objects relative to its camera frame, a lidar that measures distances relative to its sensor frame, and the robot's pose that gets expressed relative to, for example, the odometry reference frame. By the way, we need a way to express data from different sensors in the same coordinate frame. To To do so, we need to know the relative posing between each of these coordinate frames. This relative pose is also known as transform. Basically, a transform is a matrix that describes the position and the orientation of one coordinate frame relative to another coordinate frame. So, basically, we can use transforms in order to map, for example, the pose of an object from a reference frame A to a reference frame B. By the way, in ROS, we manage all these transformations and reference frames with the library called TF2. TF2 organizes coordinate frames and transformations in a tree structure, okay? So, each node of the tree represents a reference frame, and each link between nodes represents the transforms between the two frames. So, since it is a tree, we have that each frame has just a single parent frame, and transforms can also be combined to relate frames that are not directly connected. This means that we can compute using the TF3, we can compute the transforms just of, for example, in this case, of auto and base link because they are directly connected. By the way, we can also compute the transforms between front left wheel link and front right wheel link by just combining the transforms across the path in the tree, okay? This is automatically done by TF2, so we do not have to compute manually the transformation. In ROS2, we divide the transforms in two groups. The first one is static transform. They represent basically transformation that remain constant over time. So, for example, we can have a camera that is rigidly mounted on the robot. These static transforms are published on the TF static topic by the TF2 library. And then we have the dynamic transforms that are published on the TF topic, and they represent transformation that change over time. So, for example, the pose of a moving robot relative to its starting reference frame. So, as you can see, TF2 provides us tools for publishing, for storing, and for retrieving transformations. This is done by many components of the library. The first one is transform broadcaster that is the component responsible for publishing transforms between reference frames. Then we have the transform listener and TF buffer that are the two components used in our C++ node in order to retrieve the transformations between reference frames. And we see later how we can use these two. And then we have also the more complex robot state publisher that is the component that takes as input where we have the description file of the robot that is basically a file that describes how your robot is built. And the robot state publisher automatically publishes in the TF and TF static the transformation of your robot. By the way, these are quite complex. The transform broadcaster and robot state publisher are quite complex components, and in this course, we are going to see just how to use the transform listener and TF buffer in order to retrieve the transformation from our robot. So, basically, the code that you have to learn and know is basically this one. So, in this case, we want to transform a point from a source target reference frame to a from a source reference frame to a target reference frame. So, to do so, first we include the transform listener and the buffer and the files in order to use these components in our code. Then
+
+--- [Parte 3/9 • 27:31 - 41:21] ---
+
+Then we create the TF buffer object that is an object of class TF cross buffer and then we create the TF listener that is an object of class TF cross transform listener and we pass also the buffer as as These two um objects are responsible for reading uh the transformation from the TF and TF static topics. So automatically they read the topics and store the topics the the transformation in in a buffer. So the main part then is this one so the lookup transform function. This function is used in order to compute the transform between the source and the target reference frame. So uh this function takes in input as first argument the the target frame in this case is base link. The second the second argument is the source reference frame for example camera link and the third argument is in this case TF2 time point point zero. Basically here we are we are saying that we want the last available transformation between these two reference frames. As output of this lookup transform we have the transform stamped that is the computed transformation between the target and the source reference frame. So after that we are ready to um compute to transform a point expressed in the source frame into a point expressed in the target frame. So to do so we use the TF2 to transform which is a static um function. The first argument is our point expressed in our source frame. So it should be a point which which um whose um frame ID is camera link. Then the second argument is a transform point that is basically an empty point stamped point and it will be the output of our transform function and then the third argument is the transform that that we computed before with the function lookup transform. So basically the steps are these. We include the transformation and the buffer files in order to use these these components in our code. Then we um create the two objects TF buffer and TF listener in order to read the TF and TF static topics. Then we use the function lookup transform in order to compute the transformation between a source and target target frame and then we convert the point from the source reference frame to the target reference frame using the to transform function. So uh to summarize about transforms in this course you will only be asked to write nodes that subscribe to TF and TF static okay through the listener and buffer so these component here. So you do not have to read manually the TF and TF topics but you should you you you must use the TF listener and TF buffer. By the way the content so the transformation will be provided by us to use so you you are not allowed to um to publish any kind of transform. So all the transformation will be already provided by us also in exam so. And typically we are going to do so using a By the way if you want to uh develop in future your your handmade robot you have to remember that you must define a description file of your robot and run the robot state publisher in order to publish the the transformation. You can also check the documentation. So now we can start with AprilTags. AprilTags are visual markers that are widely used in robotics and computer vision. You can see an example here on the top right. They are quite similar to QR code. Each marker in some way encode a unique ID within a specific family and these marker are quite easy to detect and identify using a simple RGB camera and the main the main fact is that they provide a known visual reference frame in the 3D environment. This means that when we detect an AprilTag using a camera we also are are able to um estimate the 3D pose of the AprilTag in the 3D environment with respect to the camera frame. For this reason these AprilTags are really useful for many kind of applications like robot localization and navigation for object tracking and manipulation but also for robot and entire camera calibration. As you can imagine in ROS 2 we have um already some packages in order to use AprilTag for example like AprilTag ROS and AprilTag messages. Basically AprilTag messages just contain the definition of the message of the AprilTag AprilTag ROS contain all the the notes and the code for detecting the AprilTag um in our So these two um packages allow us to um detect tags and the detected tags are published on the ROS 2 topics in particular on AprilTag detection topic and also the 3D reference frame of the target are also published to the TF2 So here for example on the right you can see um an example of the message provided by the AprilTag. Uh you can see that we have for example the family of the tag and the ID of the tag and many other information like where is it located in the image the tag but most important we have also the frame ID of the tag and usually this frame ID is the frame of the camera from which we detect the tag. So uh now we can also talk about Rviz. Rviz is a nice and really useful visualization tool um that allows us to visualize a lot of information like transformation like point clouds like robot visualization like the images but also many other information. To do so we can also start in practice with Rviz. Uh so now I'm going to use the bag from the exercise four. So you can download the bag if you want to try this and extract the bag extract the the So uh here you can see my bag that is We can for example inspect the information of this bag with the command ROS 2 bag info and here we can read some information. We can see the duration of the bag. We can also see the number of messages and also most important the topic information so all the topics that are recorded in this bag. So you can see the topic AprilTag detection that is the topic in which we um we are going to see our detection of the tag and then we have also the TF and TF static in which we are going to see our the transformation between the reference frames. So we can play the bag and we can inspect the topic list topic list. We can see the published topic are TF, TF static and AprilTag detection. For example we can um see the content of AprilTag detection and basically here you can see some information like the family of the tag, the ID of the tag, the location in the image of the tag and also the frame ID that is camera So this is the the frame of the camera from which we detect the the tag. We can also inspect the TF the TF topic. So here you can see how the TF are published. They basically we have the timestamp, the frame ID and the child frame ID. So we have the frame ID that is the parent and the child frame ID that is the child as we have seen in the TF tree structure. We can also see the transform so the translation and the rotation So now we can also inspect these TF from Rviz. So we can open Rviz with the command Rviz 2 in this way and here you can see Rviz. Basically uh in this part of Rviz you are going to see the 3D information like point clouds, data points, transformations whereas here on the left you will manage all your displayed information. You can for example add the command in the bottom you can add you can add whatever kind of visualization you want. For example you can uh display images, you can display point clouds, TF, poses but now we are going to see for example the TF of our So we can replay the bag and basically here we can you can see the transformation of the AprilTag. Okay in particular tag zero is the floor AprilTag, tag one is the charging station tag and tag two is the AprilTag on the vacuum cleaner and this is the the reference frame of the camera. So if you have some problem visualizing the TF make sure that the TF frame here on the global options is uh set correctly because um sometimes on default it is selected of world and in this case there is no So yeah I think that you can start with the exercise okay. Basically the exercise is this one. So you have a camera mounted on a on a ceiling. We have a charging station, vacuum cleaner and also a floor reference. So we have a tag for the for for each of these element and the first thing that you have to do you have to inspect the topics of the bag that we provide to you. So you have to replay the bag and try to visualize AprilTags and TF using Rviz. Then you have to um develop a a node that use the TF buffer and TF listener in order to get the transformations. You can you have to project the poses of all the tags into the floor plane okay and then you have to reconstruct the trajectory of the robot.
+
+--- [Parte 4/9 • 41:19 - 55:15] ---
+
+After that, you have to save all this information into a CSV file, and finally, using a simple Python script, you can just read the CSV file and plot some figures, like the trajectory and the distance between the vacuum cleaner and the charging station.
+
+So, if you want, you can start your project.
+
+I guess if you have a rosbag...
+
+Yeah, because rosbag... it just replays the bag, it does replay the messages. So it just replays the topic on the rosbag.
+
+You just have to open another terminal, as for source setup.bash, and ros2 topic...
+topic...
+
+No, wait, wait, wait, wait, wait.
+
+Wait, maybe the rosbag is finished.
+
+Yeah, the rosbag is...
+Yeah.
+
+Try to replay the rosbag.
+
+Yeah, this is rosbag.
+
+So if you do like ros2 topic list and the name of the message.
+
+Yeah, yeah, yeah, but I think it's like... it depends on like what...
+
+So if you do like...
+
+Okay, so only the topic...
+
+Basically from the...
+That gave you like 1 hour since the bag is...
+
+No, the other week, no no no...
+
+...AprilTag...
+...for example you have a world...
+...you want to know like the camera wrt world...
+...but you know like the position of the camera wrt robot body. So you need to connect also the camera to the world, the wheels of the robot, for example. So you can like plan for your...
+So you need to know like...
+all this stuff...
+For example, the charger that is there, the camera is there, I move like another robot...
+Sorry, you cannot connect everything with the same tf tree.
+
+Ah, okay, so basically it depends on what you have. So there's the... single world... there's the world tf tree, but first the... it's always, if you see like tf tree is a tree, yeah, it's always... So everything is basically linked. And the reference is the base_link which would be the world. But like for example the wheels are connected to the base_link. So like it's like a... a hierarchy, and everything is connected. And for example when you have multiple robots are connected... this is a good point, actually.
+
+Usually you try to be just on the...
+
+So static is something that is fixed. So you know it's always going to be it's not the robot, but for example the camera. It's always going to be linked with a static tf to the base_link.
+
+...yes, but it's the transform between the base_link of the robot and the camera. It's always going to be the same, so the camera doesn't move...
+
+Yeah, it's something, you calculate the coordinate with the AprilTag, for example...
+
+...and also static so you cannot... rewind, while dynamic transform during... code run, you can change...
+
+No, no, no, it's...
+
+Yes.
+
+Uh you also need to uh localize better uh the robot in the environment.
+
+Yeah, but if the robot moves, you don't know like where it goes with respect to the world, right? So if you don't know where it moves with respect to the world, you can use odometry, for example, to localize the robot, but odometry is just a so an estimate of where the robot is. But at least has measures that are always with respect to the wheels. So if you like have a tiny error in the odometry measurement, then the robot is like the odometry will say the robot is there, but actually is in another position. So you need AprilTags, for example...
+
+If it does... No no, it helps the robot to localize itself, and with respect to an environment and with more accuracy. And also you can say like... because like with odometry, you can maybe also use it to localize the the battery of the robot, right? So if you put an AprilTag at least to the battery or to the charging station... the robot sees that AprilTag and knows that the position of that charging station is that, so it knows how to reach it.
+
+You can do that, but this is not at the same accuracy. AprilTags are very accurate. So the the you...
+
+They are objects, yes, but they are they are much more large, for example a charging station can be big, it can be red, can be yellow. Like a train, what is a charging station? Like how do you tell that that object is a charging station?
+
+Yeah, like. Again, right now, yes, but it is much more pain. It's much more resources in computing, while an AprilTag is dumb, so that is a very simple and fast algorithm to detect it, and it just dumbly makes computing fast. And you have a mobile robot, you also want to be lightweight because you have a battery and you cannot have massive computing resources. So you need to be efficient. So that's also one of the reasons why you use AprilTags.
+
+Oh, you define it. Every AprilTag is like a single sticker with a code. So in code you write that that code is going to be the charging station.
+
+Yeah, and the camera, yeah, gives you the distance...
+
+You just have to like...
+
+Yeah, that is.
+Okay, so here you can just...
+You can just type...
+
+So again, here is lost. Uh I don't know if you have time to write...
+
+Yes.
+
+So, if you do that, like you play that bag... here, you are going to see the topics in the reference frame...
+So here now it's empty, of course, because you don't have anything that is running.
+
+So if you replay the bag it should be... you can select up to six planes.
+
+--- [Parte 5/9 • 55:13 - 01:09:02] ---
+
+[Nessun parlato rilevato tra 55:13 e 01:09:02]
+
+--- [Parte 6/9 • 01:09:00 - 01:22:40] ---
+
+[Nessun parlato rilevato tra 01:09:00 e 01:22:40]
+
+--- [Parte 7/9 • 01:22:38 - 01:36:23] ---
+
+[Nessun parlato rilevato tra 01:22:38 e 01:36:23]
+
+--- [Parte 8/9 • 01:36:21 - 01:50:20] ---
+
+[Nessun parlato rilevato tra 01:36:21 e 01:50:20]
+
+--- [Parte 9/9 • 01:50:18 - 02:04:06] ---
+
+[Nessun parlato rilevato tra 01:50:18 e 02:04:06]
