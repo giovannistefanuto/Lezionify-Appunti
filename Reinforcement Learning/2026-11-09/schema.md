@@ -29,6 +29,8 @@ Nelle lezioni precedenti sono stati analizzati due approcci fondamentali per la 
 
 Per comprendere la necessità di un approccio intermedio, si consideri l'effetto delle due strategie su un semplice ambiente a griglia (*gridworld*) o su una passeggiata aleatoria (*random walk*):
 
+Il confronto seguente descrive un primo episodio con ricompensa solo al termine, sconto unitario e stime iniziali tutte uguali; l'effetto sugli aggiornamenti dipende da queste ipotesi.
+
 1.  **Approccio Monte Carlo:** Quando l'agente raggiunge uno stato terminale positivo (ottenendo una ricompensa $+1$), il valore stimato di **tutti** gli stati visitati lungo l'episodio viene incrementato. Questo comportamento risulta spesso ingenuo (*naive*), in quanto assegna ciecamente lo stesso merito a stati che potrebbero non aver contribuito in modo determinante all'ottenimento del risultato finale.
 2.  **Approccio $TD(0)$:** All'ottenimento della ricompensa finale $+1$, solo ed esclusivamente lo stato immediatamente precedente al momento del termine subisce un incremento nel proprio valore. Gli stati antecedenti rimangono del tutto inalterati durante il primo episodio, richiedendo molteplici episodi per "propagare" la ricompensa all'indietro.
 
@@ -75,7 +77,7 @@ flowchart LR
 
     subgraph MC ["Monte Carlo: n = ∞"]
         direction LR
-        S0_mc("S_t") --> R1_mc("R_t+1") --> R2_mc("γ R_t+2") --> DotsMC("...") --> RT("γ^(T-1) R_T")
+        S0_mc("S_t") --> R1_mc("R_t+1") --> R2_mc("γ R_t+2") --> DotsMC("...") --> RT("γ^(T-t-1) R_T")
     end
 
     style TD_0 fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
@@ -332,9 +334,9 @@ flowchart LR
     style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
     style D fill:#fff3e0,stroke:#f57c00,stroke-width:2px
 
-    A["Target G<sub>t</sub><sup>λ</sup>"] -->|Peso: 1-λ| B["G<sub>t:t+1</sub> (1-step)"]
-    A -->|Peso: (1-λ)λ| C["G<sub>t:t+2</sub> (2-step)"]
-    A -->|Peso: (1-λ)λ²| D["G<sub>t:t+3</sub> (3-step)"]
+    A["Target G<sub>t</sub><sup>λ</sup>"] -->|"Peso: 1-λ"| B["G<sub>t:t+1</sub> (1-step)"]
+    A -->|"Peso: (1-λ)λ"| C["G<sub>t:t+2</sub> (2-step)"]
+    A -->|"Peso: (1-λ)λ²"| D["G<sub>t:t+3</sub> (3-step)"]
 ```
 
 #### Significato Fisico di $\lambda$
@@ -375,7 +377,7 @@ Il parametro $\lambda$ funge da "manopola" continua tra due estremi:
    Si ottiene un bilanciamento continuo tra bias e varianza.
 
 > **Concetto Chiave:** 
-> A differenza dell'approccio $N$-step dove la variazione di $N$ è discreta, in $TD(\lambda)$ il parametro $\lambda$ offre una regolazione continua. Inoltre, $TD(\lambda)$ non scarta mai del tutto la dinamica a lungo termine: anche per valori piccoli di $\lambda$, l'influenza dei passi successivi viene comunque considerata con un peso ridotto, riducendo gli errori di attribuzione del credito (*credit assignment problem*).
+> A differenza dell'approccio $N$-step dove la variazione di $N$ è discreta, in $TD(\lambda)$ il parametro $\lambda$ offre una regolazione continua. Inoltre, $TD(\lambda)$ non scarta mai del tutto la dinamica a lungo termine: anche per valori piccoli con $0<\lambda<1$, l'influenza dei passi successivi viene comunque considerata con un peso ridotto, riducendo gli errori di attribuzione del credito (*credit assignment problem*).
 
 ---
 
