@@ -5,7 +5,7 @@
 Questa lezione introduce l'estensione dei metodi ad Apprendimento per Differenze Temporali (*Temporal-Difference Learning* o *TD Learning*) attraverso la tecnica dell'**$n$-step bootstrapping**. Finora si è analizzata la netta contrapposizione teorica e pratica tra l'approccio Monte Carlo e l'approccio $TD(0)$ a singolo passo:
 
 * **Metodi Monte Carlo**: offrono stime prive di distorsione (*unbiased* / zero bias), ma sono soggetti a un'elevata varianza (*high variance*) e richiedono il completamento dell'intero episodio per effettuare l'aggiornamento.
-* **Metodi $TD(0)$**: garantiscono un'aggiornamento immediato e a bassa varianza (*low variance*), ma introducono distorsione (*bias*) a causa della dipendenza diretta dalla stima dello stato successivo (1-step bootstrap target).
+* **Metodi $TD(0)$**: garantiscono un aggiornamento immediato e a bassa varianza (*low variance*), ma introducono distorsione (*bias*) a causa della dipendenza diretta dalla stima dello stato successivo (1-step bootstrap target).
 
 Il bilanciamento tra distorsione e varianza (*bias-variance tradeoff*) rende insoddisfacenti gli estremi. Inoltre, entrambi gli approcci tradizionali affrontano in modo limitato il **problema dell'assegnazione del credito** (*Credit Assignment Problem*), ovvero la difficoltà di attribuire la corretta responsabilità di una ricompensa a lungo termine agli stati o alle azioni precedenti. 
 
@@ -106,7 +106,7 @@ Dove:
 *   L'aggiornamento relativo allo stato $S_t$ viene effettivamente registrato nella memoria del sistema al tempo $t+n$.
 
 > **Concetto Chiave: Il parametro $n$ come manopola di regolazione (*tuning knob*)**  
-> L'intero dello sviluppo matematico dell'n-step bootstrapping si riassume nella gestione del parametro $n$:
+> L'intero sviluppo matematico dell'n-step bootstrapping si riassume nella gestione del parametro $n$:
 > *   $n = 1 \implies$ **$TD(0)$**: Minima varianza, massimo bias, aggiornamento immediato ad ogni passo.
 > *   $n \to \infty \implies$ **Monte Carlo**: Massima varianza, bias nullo, aggiornamento ritardato a fine episodio.
 > *   $1 < n < \infty \implies$ **N-Step TD**: Soluzione di compromesso in grado di bilanciare bias e varianza ottimizzando la velocità di convergenza e la stabilità dell'apprendimento.
@@ -158,18 +158,18 @@ La complessità del codice deriva direttamente dalla gestione delle due condizio
 
 #### Esempio Intuitivo a 2 Step ($n=2$)
 
-Si consideri un processo decisionale di Markov (MDP) con sequenza di stati $C \to D \to E \to \text{Terminale}$:
+Si consideri un processo decisionale di Markov (MDP) con sequenza di stati $C \to D \to E \to \text{Terminale}$ e $n=2$. Adottiamo la convenzione dello pseudocodice: all'iterazione $t$ si osservano $R_{t+1}$ e $S_{t+1}$, poi si calcola $\tau=t-n+1$.
 
-1. **Passo $t=1$ ($S_0=C \to S_1=D$, $R_1 = -1$):**
-   * $\tau = 1 - 2 + 1 = 0$, ma dobbiamo ancora attendere di completare i 2 passi per aggiornare. Nessun aggiornamento completo effettuato.
-2. **Passo $t=2$ ($S_1=D \to S_2=E$, $R_2 = 0$):**
-   * $\tau = 2 - 2 + 1 = 1$. Sono stati compiuti 2 passi dal tempo 0.
-   * Si può aggiornare lo stato visitato 2 passi prima ($S_0 = C$) utilizzando le ricompense reali $R_1, R_2$ e la stima bootstrap dello stato attuale $V(E)$:
+1. **Iterazione $t=0$ ($S_0=C \to S_1=D$, $R_1=-1$):**
+   * $\tau=0-2+1=-1$. È disponibile una sola transizione: nessun aggiornamento.
+2. **Iterazione $t=1$ ($S_1=D \to S_2=E$, $R_2=0$):**
+   * $\tau=1-2+1=0$. Sono disponibili due transizioni e si aggiorna $S_0=C$:
      $$G_{0:2} = R_1 + \gamma R_2 + \gamma^2 V(E)$$
      $$V(C) \leftarrow V(C) + \alpha \left[ G_{0:2} - V(C) \right]$$
-3. **Passo $t=3$ ($S_2=E \to Terminale$, $R_3 = +1$):**
-   * Si aggiorna lo stato visibile 2 passi prima ($S_1 = D$).
-   * Raggiunta la fine dell'episodio, si applicano gli aggiornamenti rimanenti per lo stato $E$ utilizzando il ritorno reale.
+3. **Iterazione $t=2$ ($S_2=E \to S_3=\text{Terminale}$, $R_3=+1$):**
+   * Si fissa $T=3$ e si ottiene $\tau=1$. Si aggiorna $S_1=D$ con $G_{1:3}=R_2+\gamma R_3$, senza bootstrap sul terminale.
+4. **Completamento degli aggiornamenti, $t=3$:**
+   * Non si eseguono altre azioni nell'ambiente. Con $\tau=2=T-1$ si aggiorna $S_2=E$ usando $G_{2:3}=R_3$, poi l'algoritmo termina.
 
 ---
 
@@ -177,7 +177,7 @@ Si consideri un processo decisionale di Markov (MDP) con sequenza di stati $C \t
 
 #### Risultati Sperimentali su Random Walk a 19 Stati
 
-Per valutare l'impatto del parametro $n$, consideriamo l'ambiente *Random Walk* esteso a 19 stati interpolati tra due terminali ($0$ a sinistra, $+1$ a destra), sotto una politica uniforme $\pi(A|S) = 0.5$.
+Per valutare l'impatto del parametro $n$, consideriamo l'ambiente *Random Walk* esteso a 19 stati non terminali disposti tra due stati terminali, sotto una politica uniforme $\pi(A|S) = 0.5$.
 
 La metrica usata per la valutazione della predizione è la **Radice dell'Errore Quadratico Medio (Root Mean Square Error - RMSE)** tra la funzione valore stimata $V$ e il valore reale $V^\pi$:
 
@@ -209,9 +209,9 @@ In problemi complessi come il Random Walk a 19 stati, i valori intermedi (ad ese
 
 L'algoritmo $n$-Step TD gode formalmente della **proprietà di riduzione dell'errore al caso peggiore** (*error reduction property*). È possibile dimostrare che l'aspettativa del target a $n$ passi garantisce una contrazione dell'errore massimo rispetto alla vera funzione valore $V^\pi$:
 
-$$\max_s \left| \mathbb{E}_\pi \left[ G_{t:t+n} \mid S_t = s \right] - V^\pi(s) \right| \le \gamma^n \max_s \left| V_{t+n-1}(s) - V^\pi(s) \right|$$
+$$\max_s \left| \mathbb{E}_\pi \left[ G_{t:t+n}(v) \mid S_t = s \right] - V^\pi(s) \right| \le \gamma^n \max_s \left| v(s) - V^\pi(s) \right|$$
 
-Poiché $\gamma \in [0, 1)$, il fattore $\gamma^n < 1$ assicura che il valore stimato converga a $V^\pi$ per qualsiasi scelta valida di $n$.
+Qui $G_{t:t+n}(v)$ indica il target costruito usando una funzione bootstrap $v$ fissata, sotto la politica $\pi$. Per $\gamma\in[0,1)$ il fattore $\gamma^n<1$ esprime una contrazione del target atteso; non garantisce da solo la convergenza di ogni implementazione campionata. La convergenza tabulare richiede anche visite sufficienti agli stati e condizioni appropriate sui passi di apprendimento. Un passo costante può lasciare oscillazioni residue.
 
 ---
 
@@ -266,7 +266,7 @@ L'aggiornamento $n$-step SARSA Off-Policy viene dunque pesato dal valore di $\rh
 
 $$Q(S_\tau, A_\tau) \leftarrow Q(S_\tau, A_\tau) + \alpha \, \rho_{\tau+1:\tau+n} \left[ G_{\tau:\tau+n} - Q(S_\tau, A_\tau) \right]$$
 
-> **Nota Didattica:** Esistono estensioni $n$-step anche per algoritmi come **$n$-Step Q-Learning** e **$n$-Step Expected SARSA**, che eliminano la necessità del campionamento di importanza su determinati passi sostituendo l'azione futura con il valore massimo o atteso. Tali varianti esulano dai requisiti fondamentali di questo modulo pratico.
+> **Nota Didattica:** Sostituire il bootstrap finale con un massimo o con un valore atteso non corregge automaticamente la discrepanza off-policy lungo tutta la traiettoria. Per Expected SARSA la media sull'ultima azione può eliminare il corrispondente fattore di importance sampling; gli altri passi richiedono comunque un trattamento coerente. Le varianti avanzate esulano dai requisiti fondamentali di questo modulo pratico.
 
 ---
 
@@ -299,7 +299,7 @@ Per superare questo limite, introduciamo l'algoritmo **$TD(\lambda)$**. L'idea f
 Immaginiamo di voler stimare il ritorno $G_t$ combinando due diverse stime $N$-step, ad esempio per $N=2$ e $N=4$:
 
 $$G_{t:t+2} = R_{t+1} + \gamma R_{t+2} + \gamma^2 V(S_{t+2})$$
-$$G_{t:t+4} = R_{t+1} + \gamma R_{t+2} + \gamma^3 R_{t+3} + \gamma^4 R_{t+4} + \gamma^4 V(S_{t+4})$$
+$$G_{t:t+4} = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \gamma^3 R_{t+4} + \gamma^4 V(S_{t+4})$$
 
 Se assegniamo il 50% di peso a una e il 50% all'altra, stiamo effettuando una **Combinazione Convessa (Convex Combination)**. Per garantire che il target combinato rimanga una stima consistente dello stesso ritorno $G_t$, la somma dei pesi deve essere rigorosamente pari a $1$.
 
@@ -307,7 +307,7 @@ Se assegniamo il 50% di peso a una e il 50% all'altra, stiamo effettuando una **
 
 Anziché combinare solo due stime con pesi arbitrari, $TD(\lambda)$ applica una media pesata su **tutti** i target $N$-step ($n = 1, 2, 3, \dots$), ponderandoli con un fattore di decadimento geometrico regolato dal parametro $\lambda \in [0, 1]$.
 
-Definiamo il **Ritorno-$\lambda$ ($TD(\lambda)$ Return)** $G_t^\lambda$ come:
+Per $0\le\lambda<1$, definiamo il **Ritorno-$\lambda$ ($TD(\lambda)$ Return)** $G_t^\lambda$ come:
 
 $$G_t^\lambda = (1 - \lambda) \sum_{n=1}^{\infty} \lambda^{n-1} G_{t:t+n}$$
 
@@ -323,7 +323,7 @@ Sapendo che per $0 \le \lambda < 1$ la serie geometrica converge a $\frac{1}{1 -
 
 $$(1 - \lambda) \cdot \frac{1}{1 - \lambda} = 1$$
 
-I pesi costituiscono quindi una combinazione convessa valida.
+I pesi costituiscono quindi una combinazione convessa valida per $0\le\lambda<1$. Il caso $\lambda=1$ si tratta con la formulazione episodica riportata sotto oppure come limite, quando questo esiste; non si sostituisce direttamente $1$ nella serie infinita.
 
 ```mermaid
 flowchart LR
@@ -386,17 +386,17 @@ L'approccio qui descritto è definito **Vista Frontale ($Forward\ View$) di $TD(
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Stato t as Stato S_t
+    participant StatoT as Stato S_t
     participant Futuro1 as Passo t+1
     participant Futuro2 as Passo t+2
     participant Fine as Fine Episodio (T)
     
-    Stato t->>Fine: Attende il completamento della traiettoria...
-    Fine-->>Stato t: Calcola G_t^λ combinando tutti i target futuri
-    Stato t->>Stato t: Aggiorna V(S_t)
+    StatoT->>Fine: Attende il completamento della traiettoria...
+    Fine-->>StatoT: Calcola G_t^λ combinando tutti i target futuri
+    StatoT->>StatoT: Aggiorna V(S_t)
 ```
 
-#### Limito Operativo del Forward View
+#### Limite Operativo del Forward View
 
 > **Attenzione — Criticità Fondamentale:** 
 > Per calcolare il ritorno $G_t^\lambda$ mediante la Vista Frontale, **è necessario attendere la fine dell'episodio** (o la conclusione dell'orizzonte $T$) per raccogliere tutte le ricompense $R_{t+1}, R_{t+2}, \dots, R_T$.
@@ -418,7 +418,7 @@ Dal punto di vista dell'errore (ad esempio l'errore quadratico medio $RMS$ su ta
 
 Per risolvere il limite della Vista Frontale senza rinunciare alla formulazione teorica del Ritorno-$\lambda$, verrà introdotta la **Vista All'Indietro ($Backward\ View$) di $TD(\lambda)$**. 
 
-Attraverso un meccansimo matematico basato sulle **Tracce di Elegibilità (*Eligibility Traces*)**, la Vista All'Indietro permette di ottenere **esattamente gli stessi aggiornamenti matematici** di $G_t^\lambda$, ma in modo totalmente incrementale, aggiornando gli stati passati a ogni singolo passo temporale.
+Attraverso un meccanismo basato sulle **Tracce di Elegibilità (*Eligibility Traces*)**, la Vista All'Indietro permette aggiornamenti incrementali degli stati passati a ogni passo. L'equivalenza esatta con la vista frontale richiede di specificare la convenzione di aggiornamento: vale nella formulazione offline con valori mantenuti fissi durante l'episodio; il TD($\lambda$) online convenzionale non è in generale identico a quel ritorno offline. Le formulazioni true-online realizzano un'equivalenza esatta con una corrispondente vista frontale online.
 
 ---
 
