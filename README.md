@@ -14,8 +14,8 @@ Puoi leggere i file Markdown direttamente su GitHub, senza installare nulla e se
 
 | Corso | Lezioni |
 |---|---|
-| [Game Theory](./Game%20Theory/) | 13 |
-| [Intelligent Robotics](./Intelligent%20Robotics/) | 15 |
+| [Game Theory](./Game%20Theory/) | 14 |
+| [Intelligent Robotics](./Intelligent%20Robotics/) | 16 |
 | [RC](./RC/) | 9 |
 | [Reinforcement Learning](./Reinforcement%20Learning/) | 13 |
 
