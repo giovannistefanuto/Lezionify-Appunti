@@ -10,17 +10,17 @@ Scegli la dispensa italiana, la versione inglese o la trascrizione grezza. Più 
 
 | Data | Lezione | Italiano | English | Fonte |
 |---|---|---|---|---|
-| [28/09/2026](./2026-09-28/) | Lezione | [Italiano](./2026-09-28/schema.md) | [English](./2026-09-28/schema.en.md) | [Trascrizione](./2026-09-28/trascrizione.txt) |
-| [29/09/2026](./2026-09-29/) | Lezione | [Italiano](./2026-09-29/schema.md) | [English](./2026-09-29/schema.en.md) | [Trascrizione](./2026-09-29/trascrizione.txt) |
-| [05/10/2026](./2026-10-05/) | Lezione | [Italiano](./2026-10-05/schema.md) | [English](./2026-10-05/schema.en.md) | [Trascrizione](./2026-10-05/trascrizione.txt) |
-| [06/10/2026](./2026-10-06/) | Lezione | [Italiano](./2026-10-06/schema.md) | [English](./2026-10-06/schema.en.md) | [Trascrizione](./2026-10-06/trascrizione.txt) |
-| [08/10/2026](./2026-10-08/) | Lezione | [Italiano](./2026-10-08/schema.md) | [English](./2026-10-08/schema.en.md) | [Trascrizione](./2026-10-08/trascrizione.txt) |
-| [12/10/2026](./2026-10-12/) | Lezione | [Italiano](./2026-10-12/schema.md) | [English](./2026-10-12/schema.en.md) | [Trascrizione](./2026-10-12/trascrizione.txt) |
-| [13/10/2026](./2026-10-13/) | Lezione | [Italiano](./2026-10-13/schema.md) | [English](./2026-10-13/schema.en.md) | [Trascrizione](./2026-10-13/trascrizione.txt) |
-| [19/10/2026](./2026-10-19/) | Lezione | [Italiano](./2026-10-19/schema.md) | [English](./2026-10-19/schema.en.md) | [Trascrizione](./2026-10-19/trascrizione.txt) |
-| [26/10/2026](./2026-10-26/) | Lezione | [Italiano](./2026-10-26/schema.md) | [English](./2026-10-26/schema.en.md) | [Trascrizione](./2026-10-26/trascrizione.txt) |
-| [27/10/2026](./2026-10-27/) | Lezione | [Italiano](./2026-10-27/schema.md) | [English](./2026-10-27/schema.en.md) | [Trascrizione](./2026-10-27/trascrizione.txt) |
-| [02/11/2026](./2026-11-02/) | Lezione | [Italiano](./2026-11-02/schema.md) | [English](./2026-11-02/schema.en.md) | [Trascrizione](./2026-11-02/trascrizione.txt) |
-| [03/11/2026](./2026-11-03/) | Lezione | [Italiano](./2026-11-03/schema.md) | [English](./2026-11-03/schema.en.md) | [Trascrizione](./2026-11-03/trascrizione.txt) |
-| [09/11/2026](./2026-11-09/) | Lezione | [Italiano](./2026-11-09/schema.md) | [English](./2026-11-09/schema.en.md) | [Trascrizione](./2026-11-09/trascrizione.txt) |
+| [28/09/2026](./2026-09-28/) | Introduzione al Corso: Organizzazione, Risorse e Panoramica sul Reinforcement Learning | [Italiano](./2026-09-28/schema.md) | [English](./2026-09-28/schema.en.md) | [Trascrizione](./2026-09-28/trascrizione.txt) |
+| [29/09/2026](./2026-09-29/) | Apprendimento per Rinforzo: Elementi Fondamentali e Introduzione ai Banditi | [Italiano](./2026-09-29/schema.md) | [English](./2026-09-29/schema.en.md) | [Trascrizione](./2026-09-29/trascrizione.txt) |
+| [05/10/2026](./2026-10-05/) | Lezione 1: Conclusione dei Multi-Armed Bandits e Introduzione ai Markov Decision Processes | [Italiano](./2026-10-05/schema.md) | [English](./2026-10-05/schema.en.md) | [Trascrizione](./2026-10-05/trascrizione.txt) |
+| [06/10/2026](./2026-10-06/) | Fondamenti di Reinforcement Learning: Processi di Ricompensa di Markov (MRP) e Introduzione alle Equazioni di Bellman | [Italiano](./2026-10-06/schema.md) | [English](./2026-10-06/schema.en.md) | [Trascrizione](./2026-10-06/trascrizione.txt) |
+| [08/10/2026](./2026-10-08/) | Laboratorio di Reinforcement Learning: Fondamenti del Problema Multi-Armed Bandit | [Italiano](./2026-10-08/schema.md) | [English](./2026-10-08/schema.en.md) | [Trascrizione](./2026-10-08/trascrizione.txt) |
+| [12/10/2026](./2026-10-12/) | Lezione 5: Equazioni di Bellman e Introduzione alla Programmazione Dinamica | [Italiano](./2026-10-12/schema.md) | [English](./2026-10-12/schema.en.md) | [Trascrizione](./2026-10-12/trascrizione.txt) |
+| [13/10/2026](./2026-10-13/) | Introduzione alla Policy Iteration e al Controllo nei Processi Decisionali di Markov (MDP) | [Italiano](./2026-10-13/schema.md) | [English](./2026-10-13/schema.en.md) | [Trascrizione](./2026-10-13/trascrizione.txt) |
+| [19/10/2026](./2026-10-19/) | Introduzione al Reinforcement Learning Completo: Dal Controllo basato su Modello all'Apprendimento tramite Esperienza | [Italiano](./2026-10-19/schema.md) | [English](./2026-10-19/schema.en.md) | [Trascrizione](./2026-10-19/trascrizione.txt) |
+| [26/10/2026](./2026-10-26/) | Lezione 9: Metodi Monte Carlo Off-Policy e Introduzione al Temporal Difference Learning | [Italiano](./2026-10-26/schema.md) | [English](./2026-10-26/schema.en.md) | [Trascrizione](./2026-10-26/trascrizione.txt) |
+| [27/10/2026](./2026-10-27/) | Fondamenti di Apprendimento a Differenze Temporali (Temporal Difference Learning) e Bootstrapping | [Italiano](./2026-10-27/schema.md) | [English](./2026-10-27/schema.en.md) | [Trascrizione](./2026-10-27/trascrizione.txt) |
+| [02/11/2026](./2026-11-02/) | Differenze Temporali per il Controllo: Sarsa, Q-Learning ed Expected Sarsa | [Italiano](./2026-11-02/schema.md) | [English](./2026-11-02/schema.en.md) | [Trascrizione](./2026-11-02/trascrizione.txt) |
+| [03/11/2026](./2026-11-03/) | Ripasso dei Fondamenti di Reinforcement Learning: Multi-Armed Bandits e Strategie di Esplorazione | [Italiano](./2026-11-03/schema.md) | [English](./2026-11-03/schema.en.md) | [Trascrizione](./2026-11-03/trascrizione.txt) |
+| [09/11/2026](./2026-11-09/) | Apprendimento TD Multipasso: Trade-off Bias-Varianza e n-Step Bootstrapping | [Italiano](./2026-11-09/schema.md) | [English](./2026-11-09/schema.en.md) | [Trascrizione](./2026-11-09/trascrizione.txt) |
 | [10/11/2026](./2026-11-10/) | Apprendimento per Differenze Temporali: TD($\\lambda$), Vista all'Indietro e Introduzione all'Approssimazione Funzionale di Valore | [Italiano](./2026-11-10/schema.md) | [English](./2026-11-10/schema.en.md) | [Trascrizione](./2026-11-10/trascrizione.txt) |
